@@ -67,7 +67,7 @@ class Run :
                    print(W+R+I+"-To Scan range of ips Use -N <network/prefix> -S <Start>  -E <end>\n"+R+D+I+"./Pingalbe.py -N 10.195.100.200/24 -S 240 -E 254 ")               
                    print(W+"\t\t"+"="*20)
                    print(D+I+B+"-To Scan one Host  Use  '-H' <host ip>\n./Pingalbe.py -H 10.195.100.200/25 \n"+Y+"or\n"+R+"./pingable.py -H 10.196.100.3")
-                   print(+Y"\t\t"+"="*20)
+                   print(Y+"\t\t"+"="*20)
                    print(B+"-To Save the output into file Use -O <file name>")
                    print("./Pingalbe -N 10.195.100.200/24 -S 240 -E 254 -O report.txt"+S) 
                    print(R+"="*15)
