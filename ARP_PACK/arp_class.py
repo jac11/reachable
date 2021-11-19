@@ -27,8 +27,7 @@ class Arp_Network():
     def __init__(self):
           self.args_command()
           self.Ping_command()                  
-    def Ping_command(self):
-              
+    def Ping_command(self):   
            try:
                start = timeit.default_timer()
                Network     = ipaddress.ip_network('{}'.format(self.args.network), strict=False)
@@ -53,7 +52,6 @@ class Arp_Network():
                   if  " " in host_ip : 
                      host_ip = host_ip.split()
                      host_ip_0 = str(host_ip[0])
-            
                      if ipaddress.ip_address(host_ip_0) in ipaddress.ip_network(Network1):              
                          host_ip = host_ip_0
                          command  = "ifconfig | grep 'ether'"
@@ -87,8 +85,7 @@ class Arp_Network():
                if self.args.network and self.args.Interface :
                    if "/" not in self.args.network:
                        print(I+D+R+"\n"+"="*50+W+D+I+"\n"+"[*] Set the Subnet Netwotk...."+R+D+"\n"+"="*50+"\n")
-                       exit()   
-                  
+                       exit()        
                    print(sys.argv)     
                    print(W+D+I+"\n[*] HOST INFO-\n"+R+"="*14+"\n")
                    print(D+I+B+"[+] HOST-IP         --------------|- " +  host_ip)
@@ -183,8 +180,7 @@ class Arp_Network():
                                         break
                                     elif MacGET not  in line:
                                         vendor1 = " Unknown-MAC" 
-                                    count += 1   
-                                          
+                                    count += 1           
                                 if "02" in opcodestr :
                                     Hcount  +=1	
                                     print(B+D+I+"[+] HOST OnLine     --------------|  " + Host)
@@ -208,8 +204,7 @@ class Arp_Network():
                                 time.sleep(.20)
                                 sys.stdout.write('\x1b[1A')
                                 sys.stdout.write('\x1b[2K')
-                                
-                   
+
                    stop = timeit.default_timer()
                    sec = stop  - start
                    fix_time = time.gmtime(sec)
@@ -234,11 +229,9 @@ class Arp_Network():
                    else: 
                        exit()   
            except PermissionError :
-                   print(I+D+R+"\n"+"="*50+W+D+I+"\n"+"[*]  for arp scan run as root \
-                   or sudo privileges   "+R+D+"\n"+"="*50+"\n")       
+                   print(I+D+R+"\n"+"="*50+W+D+I+"\n"+"[*]  for arp scan run as root or sudo privileges   "+R+D+"\n"+"="*50+"\n")       
            except Exception:
-                print(R+"\n"+"="*50+W+D+I+"\n"+"[*] HOST (",self.args.network,")\
-                -------------| ValueError"+R+"\n"+"="*50+"\n")
+                print(R+"\n"+"="*50+W+D+I+"\n"+"[*] ValueError (",self.args.network,")-------------| wrong format IP "+R+"\n"+"="*50+"\n")
            except KeyboardInterrupt:
                print(Banner)
                if self.args.output:
@@ -259,4 +252,3 @@ class Arp_Network():
        
 if __name__=="__main__":
    Arp_Network()
-
