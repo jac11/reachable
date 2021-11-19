@@ -85,8 +85,7 @@ class Arp_Network():
                if self.args.network and self.args.Interface :
                    if "/" not in self.args.network:
                        print(I+D+R+"\n"+"="*50+W+D+I+"\n"+"[*] Set the Subnet Netwotk...."+R+D+"\n"+"="*50+"\n")
-                       exit()        
-                   print(sys.argv)     
+                       exit()           
                    print(W+D+I+"\n[*] HOST INFO-\n"+R+"="*14+"\n")
                    print(D+I+B+"[+] HOST-IP         --------------|- " +  host_ip)
                    print("[+] Mac-Address     --------------|- " +  Mac_Interface)
