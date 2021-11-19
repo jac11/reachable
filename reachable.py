@@ -1,8 +1,16 @@
-#/usr/bin/env python3
+#!/usr/bin/env python3
 import argparse
 import sys
 from Package.Banner import *
- 
+
+S='\033[0m' 
+W = "\033[1;37m"
+R = "\033[0;31m"
+D = "\033[1m"
+I = "\033[3m"
+B = '\033[34m'  
+Y='\033[1;33m'
+
 
 class Run :
         print(Banner)
