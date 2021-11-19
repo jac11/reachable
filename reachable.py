@@ -81,7 +81,7 @@ class Run :
                    print(R+"="*15)
                    print()
                    print(W+D+I+"[*] For arp Scan Use root Login or  sudo privileges "+S)
-                   print(R+" -I or --Interface  eth0 or wlan0 you have to make sure that any of the interface are available") 
+                   print(R+" -I or --Interface  use ifconfig to make sure that any of the interface are available ") 
                    print(W+D+I+"-Example arp scan-:-"+R+"\n"+"="*10+S)
                    print(W+D+I+"-To Scan all Subnet Use -N <network/prefix> -I < Interface > \n"+Y+D+I+"sudo "+R+"./reachable.py -N 10.195.100.200/25 -I eth0 ")               
                    print(R+"\t\t"+"="*20)
