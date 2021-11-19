@@ -89,7 +89,7 @@ class Run :
                    print(D+I+B+"-To Scan one Host  Use  '-H' <host ip>\n sudo ./reachable.py -H 10.195.100.200/25 \n"+Y+"or\n"+Y+" sudo"+R+" .reachable.py -H 10.196.100.3")
                    print(Y+"\t\t"+"="*20)
                    print(B+"-To Save the output into file Use -O <file name>")
-                   print("./reachable.py -N 10.195.100.200/24 -S 240 -E 254 -O report.txt"+S) 
+                   print("sudo ./reachable.py -N 10.195.100.200/24 -S 240 -E 254 -O report.txt"+S) 
                    print(Banner)
                    exit()
 
