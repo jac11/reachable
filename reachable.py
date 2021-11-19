@@ -1,5 +1,3 @@
-#!/usr/bin/env python3 
-
 import argparse
 import sys
 from Package.Banner import *
@@ -17,7 +15,7 @@ class Run :
               print("\t\t\t      PING-SCAN"+"\n\t\t        "+"+"*20+"\n")
               run = Discover_Network()
               exit()
-           elif self.args.start and self.args.end and not self.rgs.Interface and not self.args.Interface:
+           elif self.args.start and self.args.end and not self.args.Interface and not self.args.Interface:
               
               from Package.HostRange import RangeOfHosts
               print("\t\t\t      PING-SCAN"+"\n\t\t        "+"+"*20+"\n")
@@ -62,18 +60,28 @@ class Run :
               else:
                    parser.print_help()
                    print(R+"="*15)
-                   print("Example:-"+"\n"+"="*10)
-                   print("-To Scan all Subnet Use -N <network/prefix>\n./Pingalbe.py -N 10.195.100.200/25")               
-                   print("\t\t"+"="*20)
-                   print("-To Scan range of ips Use -N <network/prefix> -S <Start>  -E <end>\n./Pingalbe.py -N 10.195.100.200/24 -S 240 -E 254 ")               
-                   print("\t\t"+"="*20)
-                   print("-To Scan one Host  Use  '-H' <host ip>\n./Pingalbe.py -H 10.195.100.200/25 \nor\n./pingable.py -H 10.196.100.3")
-                   print("\t\t"+"="*20)
-                   print("-To Save the output into file Use -O <file name>")
-                   print("./Pingalbe -N 10.195.100.200/24 -S 240 -E 254 -O report.txt") 
+                   print(W+D+I+"-Example ping scan :-"+R+"\n"+"="*10+S)
+                   print(W+D+I+"-To Scan all Subnet Use -N <network/prefix>\n"+R+D+I+"./Pingalbe.py -N 10.195.100.200/25")               
+                   print(r+"\t\t"+"="*20)
+                   print(W+R+I+"-To Scan range of ips Use -N <network/prefix> -S <Start>  -E <end>\n"+R+D+I+./Pingalbe.py -N 10.195.100.200/24 -S 240 -E 254 ")               
+                   print(W+"\t\t"+"="*20)
+                   print(D+I+B+"-To Scan one Host  Use  '-H' <host ip>\n./Pingalbe.py -H 10.195.100.200/25 \n"+Y+"or\n+R+"./pingable.py -H 10.196.100.3")
+                   print(+Y"\t\t"+"="*20)
+                   print(B+"-To Save the output into file Use -O <file name>")
+                   print("./Pingalbe -N 10.195.100.200/24 -S 240 -E 254 -O report.txt"+S) 
+                   print(R+"="*15)
+                   print(W+D+I+"[*] For arp Scan Use root Login or  sudo privileges "+S)
+                   print(W+D+I+"-Example arp scan-:-"+R+"\n"+"="*10+S)
+                   print(W+D+I+"-To Scan all Subnet Use -N <network/prefix>\n"+Y+D+I+"sudo "+R+"./Pingalbe.py -N 10.195.100.200/25")               
+                   print(r+"\t\t"+"="*20)
+                   print(W+R+I+"-To Scan range of ips Use -N <network/prefix> -S <Start>  -E <end>\n"+Y+D+I+"sudo"+R+D+I+" ./Pingalbe.py -N 10.195.100.200/24 -S 240 -E 254 ")               
+                   print(W+"\t\t"+"="*20)
+                   print(D+I+B+"-To Scan one Host  Use  '-H' <host ip>\n./Pingalbe.py -H 10.195.100.200/25 \n"+Y+"or\n"+Y+" sudo"+R+" ./pingable.py -H 10.196.100.3")
+                   print(+Y"\t\t"+"="*20)
+                   print(B+"-To Save the output into file Use -O <file name>")
+                   print("./Pingalbe -N 10.195.100.200/24 -S 240 -E 254 -O report.txt"+S) 
                    print(Banner)
                    exit()
 
 if __name__=="__main__":
    Run()
-
