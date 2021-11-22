@@ -11,6 +11,7 @@
  - reachable tool will get the mac-addess for davice and mac-vendor as well 
 * code dowblow the part of respones about gentrat the hostip for all subnet mask then sen echo ping recqut one by one then wating for repones 
 and use rexuxe to mach the mac address and print the mac-adrees and mac-vendor 
+
  ```python 
  for Host in Network .hosts():
            Host = str(Host)
@@ -42,8 +43,12 @@ and use rexuxe to mach the mac address and print the mac-adrees and mac-vendor
  ```
  <img src = "images/2.png" width=450>  <img src = "images/1.png" width=450>
 
- ===========================================================================================
+ =============================================================================
 
  ## arp Scan - 
  ===============
- 
+ ### Address Resolution Protocol (ARP)
+ * for arp scan i use python socket mudule to gentat raw socket 
+ #### raw socket 
+ ##### Another very useful socket type is SocketType.Raw, which is used by applications that need to build custom protocol headers encapsulated in the given transport protocol header, which in our case can either be an IPv4 arp protoco,raw socket is created by creating a Socket object and specifying either IPv4 or IPv6, SocketType.Raw, and the ProtocolType of the protocol being built by the application 
+* [more info](https://www.winsocketdotnetworkprogramming.com/clientserversocketnetworkcommunication8n.html)
