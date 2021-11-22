@@ -46,23 +46,17 @@ class RangeOfHosts :
                    ip,sub = fix.split('/')
                    oct_ip = ip.split('.')
                    start_ip = str(Network_ID).split(".") 
-                   if (int(self.args.start)==int(start_ip[3])):
-                           print(R+"\n"+"="*50+"\n"+"[+] Erorr       --------------|- Start Ip is Netwotk-ID "+"\n"+"="*50+"\n")
-                           exit()
-                   elif int(self.args.start) < int(self.args.end) and  (int(self.args.end) < int(end_ip[3])):
-                           total = int(self.args.end) - int(self.args.start)+1
-                   else:
-                      if(int(self.args.end) > int(end_ip[3])):
-                           print("\n"+"="*50+"\n"+"[+] Erorr       --------------|- range ip out of Subnet-Mask "+"\n"+"="*50+"\n")
-                           exit()
-                      elif(int(self.args.end))== 255:
-                           print("\n"+"="*50+"\n"+"[+] Erorr       --------------|-  end range is  broadcast  "+"\n"+"="*50+"\n")
-                           exit()
-                   if int(self.args.start) > 256 or int(self.args.end) > 256:
-                           print("\n"+"="*50+"\n"+"[+] Erorr       --------------|- Host-Count > 255 Hosts "+"\n"+"="*50+"\n")
-                           exit()
-                   else:
-                       pass  
+                   if int(self.args.start)  not in range(int(start_ip[3]),int(end_ip[3])) \
+                   or int(self.args.end)  not in range(int(start_ip[3]),int(end_ip[3])) :
+                          print(start_ip[3])
+                          print(end_ip[3])
+                          print(D+R+I+"[+] Range Error     --------------| Hosts Count out of range Network Subnet" )
+                          exit()
+                   elif int(self.args.start) >= int (self.args.end) : 
+                          print("[+] Range Error     --------------|  Wrong arithmetic Operation " )
+                          exit()    
+                   elif int(self.args.start) < int(self.args.end) :
+                        total = int(self.args.end) - int(self.args.start) 
                    command_argv = str(" ".join(sys.argv))
                    start = timeit.default_timer()
                    Mac_Interface = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
@@ -125,9 +119,9 @@ class RangeOfHosts :
                    print("[+] Number of hosts --------------|- " +  str(Hosts_range ))
                    print("[+] Broadcast IP    --------------|- " +  str(Network.broadcast_address))
                    print(W+D+I+"\n[*] Range Host -\n"+R+"="*17)
-                   print(B+I+D+"[+] Start-Count     --------------|- " + self.args.start)
-                   print(B+D+I+"[+] End-Count       --------------|- " + self.args.end)
-                   print(B+D+I+"[+] Host-Count      --------------|- " + str(total ))
+                   print(B+I+D+"[+] Start-Count     --------------|- " + Y, self.args.start)
+                   print(B+D+I+"[+] End-Count       --------------|- " + Y, self.args.end)
+                   print(B+D+I+"[+] Host-Count      --------------|- " + Y, str(total ))
                    print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Host-discover-"+"\n"+R+"="*20+"\n")
                    if self.args.output:
                          printF  = ""
