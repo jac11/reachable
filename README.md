@@ -40,11 +40,10 @@ and use rexuxe to mach the mac address and print the mac-adrees and mac-vendor
                                       out_put.write(str(printF+"\n"))
                           interfaceMac = Mac_Interface[0:8].replace(":","").upper() 
  ```
- <img src = "images/1.png" width=350>  <img src = "images/3.png" width=350>
- <img src = "images/4.png" width=350> <img src = "images/11.png" width=350>
- <img src = "images/22.png" width=350> 
+ <img src = "images/2.png" width=450>  <img src = "images/1.png" width=450>
+
  ===========================================================================================
- ==========================================================================================
+
  ## arp Scan - 
  ===============
  
