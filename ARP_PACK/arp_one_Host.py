@@ -36,7 +36,7 @@ except Exception :
          host_ip = sys.argv[2]
    
 class Arp_Host_One():
-          
+         
         def __init__(self):
            self.args_command()
            self.Ping_command()                 
@@ -212,3 +212,4 @@ class Arp_Host_One():
        
 if __name__=="__main__":
    Arp_Host_One()
+        
