@@ -44,9 +44,9 @@ class Run :
               exit()
            elif self.args.start and self.args.end and self.args.Interface :
               
-              from ARP_PACK.arp_range import Arp_Host_One
+              from ARP_PACK.arp_range import Range_arp_host
               print("\t\t\t      ARP-SCAN"+"\n\t\t        "+"+"*20+"\n")
-              run = Arp_Host_One()
+              run = Range_arp_host()
               exit()
            elif self.args.Host and self.args.Interface:
               
