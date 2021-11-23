@@ -9,7 +9,7 @@
  - Ping scan by sending Internet Control Message Protocol (ICMP) echo request packets to the target host and waiting for an ICMP echo reply. 
  - user can ping all network subnet or rangs of ips or one host
  - reachable tool will get the mac-addess for davice and mac-vendor as well 
-* code dowblow the part of respones about gentrat the hostip for all subnet mask then sen echo ping recqut one by one then wating for repones 
+*  down blow the part of response about gentrat the hostip for all subnet mask then sen echo ping recqut one by one then wating for repones 
 and use rexuxe to mach the mac address and print the mac-adrees and mac-vendor 
 
  ```python 
@@ -48,7 +48,98 @@ and use rexuxe to mach the mac address and print the mac-adrees and mac-vendor
  ## arp Scan - 
  ===============
  ### Address Resolution Protocol (ARP)
- * for arp scan i use python socket mudule to gentat raw socket 
+ *  for arp scan i use python socket module to generate raw socket
+ *  send arp requset and receiving  arp replay raw woring on network laye 2 
  #### raw socket 
  ##### Another very useful socket type is SocketType.Raw, which is used by applications that need to build custom protocol headers encapsulated in the given transport protocol header, which in our case can either be an IPv4 arp protoco,raw socket is created by creating a Socket object and specifying either IPv4 or IPv6, SocketType.Raw, and the ProtocolType of the protocol being built by the application 
+* [python socket tutorial](https://realpython.com/python-sockets/)
+* [arp protocol](https://en.wikipedia.org/wiki/Address_Resolution_Protocol#References)
 * [more info](https://www.winsocketdotnetworkprogramming.com/clientserversocketnetworkcommunication8n.html)
+* down blow the part of the code response for send and arp requst and and recv arp replay
+```python for Host in Network .hosts():
+                        Host = str(Host)
+                        rawSocket = socket.socket(socket.PF_PACKET, socket.SOCK_RAW,socket.htons(0x0806))                     
+                        rawSocket.settimeout(.20)
+                        rawSocket.bind((self.args.Interface,0x0806))
+                        source_ip  = bytes(host_ip.encode('utf-8'))
+                        dest_ip    = bytes(Host.encode('utf-8'))
+                        if dest_ip == source_ip :
+                            Hcount  +=1	    
+                            print(Y+D+I+"[+] HOST OnLine     --------------|  " + Host)
+                            print("[*] Mac-Address     ..............|- " + Mac_Interface)
+                            print("[+] Mac-Vendor      --------------|  " + vendor+'\n')
+                            if self.args.output :
+                                printF += str("[+] HOST OnLine     --------------|  " + Host).strip()+'\n'
+                                printF += str("[*] Mac-Address     ..............|- " + Mac_Interface).strip()+'\n'
+                                printF += str("[+] Mac-Vendor      --------------|  " + vendor).strip()+'\n'
+                                printF +='\n'
+                            interfaceMac = Mac_Interface[0:8].replace(":","").upper()
+                        else:      
+                            source_mac = binascii.unhexlify(Mac_Interface.replace(":",''))
+                            dest_mac   = b"\xff\xff\xff\xff\xff\xff"
+                            protocol   = 0x0806
+                            eth_hdr    = struct.pack("!6s6sH",dest_mac,source_mac,protocol)
+                            htype      = 1
+                            ptype      = 0x0800
+                            hlen       = 6
+                            plen       = 4 
+                            operations = 1
+                            src_ip  = socket.inet_aton(str(source_ip).replace("'","").replace('b',""))
+                            des_ip  = socket.inet_aton(str(dest_ip).replace("'","").replace('b',""))
+                            arp_hdr = struct.pack("!HHBBH6s4s6s4s",htype,ptype,hlen,plen,operations,source_mac,src_ip,dest_mac,des_ip)
+                            Packet         = eth_hdr + arp_hdr
+                            try:
+                                send_packet    = rawSocket.send(Packet) 
+                                recv_replay    = rawSocket.recv(1020)
+                                rawSocket.close() 
+
+```
+<img src = "images/4.png" width=450>  <img src = "images/3.png" width=450>
+=======================================================================================================
+## how to use 
+=================
+
+1.  https://github.com/jac11/reachable.git
+2.  cd reachable
+3.  chmod +x rachable.py
+4.  show help massagess ./reachable -h 
+5.  more explian
+6.
+* Example ping scan :-
+
+* To Scan all Subnet Use -N <network/prefix>
+  * ./reachable.py -N 10.195.100.200/25
+
+*To Scan range of ips Use -N <network/prefix> -S <Start>  -E <end>
+    * ./reachable.py -N 10.195.100.200/24 -S 240 -E 254 
+ 
+* To Scan one Host  Use  '-H' <host ip>
+   * ./reachable.py -H 10.195.100.200/25
+or
+ *  ./reachable.py -H 10.196.100.3
+
+* To Save the output into file Use -O <file name>
+   * ./reachable.py -N 10.195.100.200/24 -S 240 -E 254 -O report.txt
+ 
+* Example arp scan-:-
+
+* To Scan all Subnet Use -N <network/prefix> -I < Interface > 
+   *sudo./reachable.py -N 10.195.100.200/25 -I eth0 
+
+* To Scan range of ips Use -N <network/prefix> -S <Start>  -E <end>
+ * sudo./reachable.py -N 10.195.100.200/24  -I eth0 -S 240 -E 254 
+
+* To Scan one Host  Use  '-H' <host ip>
+ * sudo ./reachable.py -H 10.195.100.200/25 -I eth0 
+or
+ * sudo./reachable.py -H 10.196.100.3 -I wlan0
+
+* To Save the output into file Use -O <file name>
+ * sudo ./reachable.py -N 10.195.100.200/24  -I eth0 -S 240 -E 254 -O report.txt
+### Noted:-
+ ### [*] For arp Scan Use root Login or  sudo privileges 
+   * to use -I or --Interface  use ifconfig to make sure that any of the interface are available 
+ ## connect :
+     * administartor@jacstory.com
+     * thank you 
+ 
