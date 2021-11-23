@@ -103,9 +103,8 @@ and use rexuxe to mach the mac address and print the mac-adrees and mac-vendor
 2.  cd reachable
 3.  chmod +x rachable.py
 4.  show help massagess ./reachable -h 
-5.  more explian
-6.
-* Example ping scan :-
+
+ ### * Example ping scan :-
 
 * To Scan all Subnet Use -N <network/prefix>
   * ./reachable.py -N 10.195.100.200/25
@@ -113,33 +112,33 @@ and use rexuxe to mach the mac address and print the mac-adrees and mac-vendor
 *To Scan range of ips Use -N <network/prefix> -S <Start>  -E <end>
     * ./reachable.py -N 10.195.100.200/24 -S 240 -E 254 
  
-* To Scan one Host  Use  '-H' <host ip>
-   * ./reachable.py -H 10.195.100.200/25
-   or
-     * ./reachable.py -H 10.196.100.3
+### * To Scan one Host  Use  '-H' <host ip>
+  * ./reachable.py -H 10.195.100.200/25
+  *  or
+  * ./reachable.py -H 10.196.100.3
 
-* To Save the output into file Use -O <file name>
-   * ./reachable.py -N 10.195.100.200/24 -S 240 -E 254 -O report.txt
+####* To Save the output into file Use -O <file name>
+    * ./reachable.py -N 10.195.100.200/24 -S 240 -E 254 -O report.txt
  
-* Example arp scan-:-
+ ### * Example arp scan-:-
 
-* To Scan all Subnet Use -N <network/prefix> -I < Interface > 
+#### * To Scan all Subnet Use -N <network/prefix> -I < Interface > 
    *sudo./reachable.py -N 10.195.100.200/25 -I eth0 
 
-* To Scan range of ips Use -N <network/prefix> -S <Start>  -E <end>
- * sudo./reachable.py -N 10.195.100.200/24  -I eth0 -S 240 -E 254 
+ #### * To Scan range of ips Use -N <network/prefix> -S <Start>  -E <end>
+   * sudo./reachable.py -N 10.195.100.200/24  -I eth0 -S 240 -E 254 
 
-* To Scan one Host  Use  '-H' <host ip>
+#### * To Scan one Host  Use  '-H' <host ip>
    * sudo ./reachable.py -H 10.195.100.200/25 -I eth0 
-   or
+   * or
    * sudo./reachable.py -H 10.196.100.3 -I wlan0
 
-* To Save the output into file Use -O <file name>
-  * sudo ./reachable.py -N 10.195.100.200/24  -I eth0 -S 240 -E 254 -O report.txt
+#### * To Save the output into file Use -O <file name>
+    * sudo ./reachable.py -N 10.195.100.200/24  -I eth0 -S 240 -E 254 -O report.txt
 ### Noted:-
- ### [] For arp Scan Use root Login or  sudo privileges 
-     * to use -I or --Interface  use ifconfig to make sure that any of the interface are available 
+ ### For arp Scan Use root Login or  sudo privileges 
+ *  to use -I or --Interface  use ifconfig to make sure that any of the interface are available 
  ## connect :
-     * administartor@jacstory.com
-     * thank you 
+     *   administartor@jacstory.com
+     *   thank you 
  
