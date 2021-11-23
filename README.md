@@ -7,9 +7,9 @@
 ### ping Scan -
 -------------------------------------
  - Ping scan by sending Internet Control Message Protocol (ICMP) echo request packets to the target host and waiting for an ICMP echo reply. 
- - user can ping all network subnet or rangs of ips or one host.
- - reachable tool will get the mac-addess for davice and mac-vendor as well.
-*  down below the part of response about generate the host ip for all subnet mask then send echo ping request  one by one ,then wating for repones ,and use regex to mach the mac-address and print the mac-address and mac-vendor 
+ -  User, can ping all network subnet ,or rangs of ips ,or one host.
+ -  reachable tool , will get the mac-addess info , and mac-vendor as well.
+*  downbelow the part of response about generate the host ip for all subnet mask ,then send echo ping request ,one by one ,then wating for response ,and use regex to mach the mac-address and print the mac-address and mac-vendor 
 
  ```python 
  for Host in Network .hosts():
