@@ -1,9 +1,9 @@
 # reachable:-
 *****************************
 ### reachable network scan
-* reachable, its tool writen by pyhton3 , to discover the hosts devices on the Network .
-* reachable, tool have two ways to get the host on network Ping scan and arp scan.
-* by start reachable will regex you host info and your network subnet.
+* writen by pyhton3 ,help  to discover the hosts devices on the Network ,
+ have two ways to get the host on network Ping scan and arp scan,
+,by start reachable will regex you host info and your network subnet.
 ### ping Scan -
 -------------------------------------
  - Ping scan by sending Internet Control Message Protocol (ICMP) echo request packets to the target host and waiting for an ICMP echo reply. 
