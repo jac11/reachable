@@ -55,7 +55,7 @@
 * [arp protocol](https://en.wikipedia.org/wiki/Address_Resolution_Protocol#References)
 * [more info](https://www.winsocketdotnetworkprogramming.com/clientserversocketnetworkcommunication8n.html)
 * downbelow the part of the code working in raw socket , send the raw  data to the Network broadcast after pack the   data to raw bytes ,and received arp replay , then unpack raw data
- ,and slicet the data ,the print the info
+ ,then slice ip header data w  ,the print the info
 ```python for Host in Network .hosts():
                         Host = str(Host)
                         rawSocket = socket.socket(socket.PF_PACKET, socket.SOCK_RAW,socket.htons(0x0806))                     
