@@ -43,15 +43,15 @@ and use rexuxe to mach the mac address and print the mac-adrees and mac-vendor
  ```
  <img src = "images/2.png" width=450>  <img src = "images/1.png" width=450>
 
- =============================================================================
+ -----------------------------------------------------------------
 
  ## arp Scan - 
- ===============
+ -----------------------------------------
  ### Address Resolution Protocol (ARP)
  *  for arp scan i use python socket module to generate raw socket
  *  send arp requset and receiving  arp replay raw woring on network laye 2 
  #### raw socket 
- ##### Another very useful socket type is SocketType.Raw, which is used by applications that need to build custom protocol headers encapsulated in the given transport protocol header, which in our case can either be an IPv4 arp protoco,raw socket is created by creating a Socket object and specifying either IPv4 or IPv6, SocketType.Raw, and the ProtocolType of the protocol being built by the application 
+ ##### Another very useful socket type is SocketType.Raw, which is used by applications that need to build custom protocol headers encapsulated in the given transport protocol header, which in our case can either be an IPv4 arp protoco,raw socket is created by creating a Socket object and specifying either IPv4 or IPv6, SocketType.Raw, and the Protocol Type .
 * [python socket tutorial](https://realpython.com/python-sockets/)
 * [arp protocol](https://en.wikipedia.org/wiki/Address_Resolution_Protocol#References)
 * [more info](https://www.winsocketdotnetworkprogramming.com/clientserversocketnetworkcommunication8n.html)
@@ -95,50 +95,67 @@ and use rexuxe to mach the mac address and print the mac-adrees and mac-vendor
 
 ```
 <img src = "images/4.png" width=450>  <img src = "images/3.png" width=450>
-=======================================================================================================
+-----------------------------------------------------------------
 ## how to use 
-=================
+-----------------------------------------------
 
 1.  https://github.com/jac11/reachable.git
 2.  cd reachable
 3.  chmod +x rachable.py
 4.  show help massagess ./reachable -h 
-
+-----------------------------------------------
  ### * Example ping scan :-
+-------------------------------------------
 
-* To Scan all Subnet Use -N <network/prefix>
-  * ./reachable.py -N 10.195.100.200/25
-
-*To Scan range of ips Use -N <network/prefix> -S <Start>  -E <end>
-    * ./reachable.py -N 10.195.100.200/24 -S 240 -E 254 
- 
-### * To Scan one Host  Use  '-H' <host ip>
-  * ./reachable.py -H 10.195.100.200/25
-  *  or
-  * ./reachable.py -H 10.196.100.3
-
-####* To Save the output into file Use -O <file name>
-    * ./reachable.py -N 10.195.100.200/24 -S 240 -E 254 -O report.txt
- 
+#### * To Scan all Subnet Use -N <network/prefix>
+```
+   ./reachable.py -N 10.195.100.200/25
+````
+#### * To Scan range of ips Use -N network/prefix -S Start  -E end
+```
+   ./reachable.py -N 10.195.100.200/24 -S 240 -E 254 
+ ```
+#### * To Scan one Host  Use  -H  host ip
+```
+    ./reachable.py -H 10.195.100.200/25
+```    
+* or
+```
+    ./reachable.py -H 10.196.100.3
+````
+#### * To Save the output into file Use -O file name
+```
+     ./reachable.py -N 10.195.100.200/24 -S 240 -E 254 -O report.txt
+ ```    
+--------------------------------------------------------
  ### * Example arp scan-:-
-
-#### * To Scan all Subnet Use -N <network/prefix> -I < Interface > 
-   *sudo./reachable.py -N 10.195.100.200/25 -I eth0 
-
- #### * To Scan range of ips Use -N <network/prefix> -S <Start>  -E <end>
-   * sudo./reachable.py -N 10.195.100.200/24  -I eth0 -S 240 -E 254 
-
-#### * To Scan one Host  Use  '-H' <host ip>
-   * sudo ./reachable.py -H 10.195.100.200/25 -I eth0 
-   * or
-   * sudo./reachable.py -H 10.196.100.3 -I wlan0
-
-#### * To Save the output into file Use -O <file name>
-    * sudo ./reachable.py -N 10.195.100.200/24  -I eth0 -S 240 -E 254 -O report.txt
-### Noted:-
- ### For arp Scan Use root Login or  sudo privileges 
- *  to use -I or --Interface  use ifconfig to make sure that any of the interface are available 
- ## connect :
-     *   administartor@jacstory.com
-     *   thank you 
+------------------------------------------------
+#### * To Scan all Subnet Use -N network/prefix -I  Interface
+```
+     sudo ./reachable.py -N 10.195.100.200/25 -I eth0 
+```
+ #### * To Scan range of ips Use -N <network/prefix> -S Start  -E end
+ ```
+     sudo ./reachable.py -N 10.195.100.200/24  -I eth0 -S 240 -E 254 
+```
+#### * To Scan one Host  Use  -H  host ip
+```
+     sudo ./reachable.py -H 10.195.100.200/25 -I eth0
+ ```    
+ * or
+ ```
+     sudo ./reachable.py -H 10.196.100.3 -I wlan0
+```
+#### * To Save the output into file Use -O file name
+```
+  sudo ./reachable.py -N 10.195.100.200/24  -I eth0 -S 240 -E 254 -O report.txt
+```
+###  Noted:-
+--------------------------------------
+###  For arp Scan Use root Login or  sudo privileges 
+###  to use -I or --Interface  use ifconfig to make sure that any of the interface are available
+-----------------------------------------
+## connect :
+- administartor@jacstory.toch
+-  thank you 
  
