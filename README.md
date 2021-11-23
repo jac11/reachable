@@ -115,8 +115,8 @@ and use rexuxe to mach the mac address and print the mac-adrees and mac-vendor
  
 * To Scan one Host  Use  '-H' <host ip>
    * ./reachable.py -H 10.195.100.200/25
-or
- *  ./reachable.py -H 10.196.100.3
+   or
+     * ./reachable.py -H 10.196.100.3
 
 * To Save the output into file Use -O <file name>
    * ./reachable.py -N 10.195.100.200/24 -S 240 -E 254 -O report.txt
@@ -130,15 +130,15 @@ or
  * sudo./reachable.py -N 10.195.100.200/24  -I eth0 -S 240 -E 254 
 
 * To Scan one Host  Use  '-H' <host ip>
- * sudo ./reachable.py -H 10.195.100.200/25 -I eth0 
-or
- * sudo./reachable.py -H 10.196.100.3 -I wlan0
+   * sudo ./reachable.py -H 10.195.100.200/25 -I eth0 
+   or
+   * sudo./reachable.py -H 10.196.100.3 -I wlan0
 
 * To Save the output into file Use -O <file name>
- * sudo ./reachable.py -N 10.195.100.200/24  -I eth0 -S 240 -E 254 -O report.txt
+  * sudo ./reachable.py -N 10.195.100.200/24  -I eth0 -S 240 -E 254 -O report.txt
 ### Noted:-
- ### [*] For arp Scan Use root Login or  sudo privileges 
-   * to use -I or --Interface  use ifconfig to make sure that any of the interface are available 
+ ### [] For arp Scan Use root Login or  sudo privileges 
+     * to use -I or --Interface  use ifconfig to make sure that any of the interface are available 
  ## connect :
      * administartor@jacstory.com
      * thank you 
