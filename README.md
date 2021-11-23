@@ -1,16 +1,15 @@
 # reachable:-
 *****************************
 ### reachable network scan
-* reachable its tool writen with pyhton3 hele to discover the hosts devices on the Network .
-* reachable tool have two ways to get the host on network Ping scan and arp scan. 
-* by star reachable will grep  you host info and your netwok subnet
+* reachable, its tool writen by pyhton3 , to discover the hosts devices on the Network .
+* reachable, tool have two ways to get the host on network Ping scan and arp scan.
+* by start reachable will regex you host info and your network subnet.
 ### ping Scan -
-===============
+-------------------------------------
  - Ping scan by sending Internet Control Message Protocol (ICMP) echo request packets to the target host and waiting for an ICMP echo reply. 
- - user can ping all network subnet or rangs of ips or one host
- - reachable tool will get the mac-addess for davice and mac-vendor as well 
-*  down blow the part of response about gentrat the hostip for all subnet mask then sen echo ping recqut one by one then wating for repones 
-and use rexuxe to mach the mac address and print the mac-adrees and mac-vendor 
+ - user can ping all network subnet or rangs of ips or one host.
+ - reachable tool will get the mac-addess for davice and mac-vendor as well.
+*  down below the part of response about generate the host ip for all subnet mask then send echo ping request  one by one ,then wating for repones ,and use regex to mach the mac-address and print the mac-address and mac-vendor 
 
  ```python 
  for Host in Network .hosts():
@@ -48,8 +47,8 @@ and use rexuxe to mach the mac address and print the mac-adrees and mac-vendor
  ## arp Scan - 
  -----------------------------------------
  ### Address Resolution Protocol (ARP)
- *  for arp scan i use python socket module to generate raw socket
- *  send arp requset and receiving  arp replay raw woring on network laye 2 
+ *  for arp scan i use python socket module to generate raw socket.
+ *  send arp request  and receiving  arp replay raw working in network layer2.
  #### raw socket 
  ##### Another very useful socket type is SocketType.Raw, which is used by applications that need to build custom protocol headers encapsulated in the given transport protocol header, which in our case can either be an IPv4 arp protoco,raw socket is created by creating a Socket object and specifying either IPv4 or IPv6, SocketType.Raw, and the Protocol Type .
 * [python socket tutorial](https://realpython.com/python-sockets/)
