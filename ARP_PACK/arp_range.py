@@ -47,8 +47,6 @@ class Range_arp_host :
                    start = timeit.default_timer()
                    if int(self.args.start)  not in range(int(start_ip[3]),int(end_ip[3])) \
                    or int(self.args.end)  not in range(int(start_ip[3]),int(end_ip[3])) :
-                          print(start_ip[3])
-                          print(end_ip[3])
                           print(D+R+I+"[+] Range Error     --------------| Hosts Count out of range Network Subnet" )
                           exit()
                    elif int(self.args.start) >= int (self.args.end) : 
