@@ -102,7 +102,7 @@
 1.  https://github.com/jac11/reachable.git
 2.  cd reachable
 3.  chmod +x rachable.py
-4.  show help massagess ./reachable -h 
+4.  show help message ./reachable -h 
 -----------------------------------------------
  ### * Example ping scan :-
 -------------------------------------------
