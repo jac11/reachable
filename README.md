@@ -13,32 +13,32 @@
 
  ```python 
  for Host in Network .hosts():
-           Host = str(Host)
-           DisCover = Popen(["ping", "-w1",Host], stdout=PIPE)
-           output   = DisCover.communicate()[0]
-           respons  = DisCover.returncode                       
-           if respons == 0:
-               Hcount  +=1	
-               if Host == host_ip:
-                   print(Y+I+D+"[+] HOST OnLine     --------------| ",host_ip)
-               else:
-                   print(B+I+D+"[+] HOST OnLine     --------------| ",Host)      
+     Host = str(Host)
+     DisCover = Popen(["ping", "-w1",Host], stdout=PIPE)
+     output   = DisCover.communicate()[0]
+     respons  = DisCover.returncode                       
+     if respons == 0:
+        Hcount  +=1	
+        if Host == host_ip:
+           print(Y+I+D+"[+] HOST OnLine     --------------| ",host_ip)
+        else:
+             print(B+I+D+"[+] HOST OnLine     --------------| ",Host)      
+        if self.args.output :
+            printF = str("[+] HOST OnLine     --------------|  " + Host).strip()
+            with  open (self.args.output,"a") as out_put :
+                  out_put.write(printF+"\n")
+        pid = Popen(["arp", "-a", Host], stdout=PIPE)
+        arp_host = pid.communicate()[0]                          
+        Mac_arp = str(arp_host)
+        Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
+        Mac = str(re.findall(Macaddr ,Mac_arp)).replace("['",'').replace("']","")
+            if "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) ==  str(ipaddress.ip_address(host_ip)) :
+               print(Y+D+I+"[*] Mac-Address     ..............|-",Mac_Interface)
                if self.args.output :
-                   printF = str("[+] HOST OnLine     --------------|  " + Host).strip()
-                   with  open (self.args.output,"a") as out_put :
-                         out_put.write(printF+"\n")
-                   pid = Popen(["arp", "-a", Host], stdout=PIPE)
-                   arp_host = pid.communicate()[0]                          
-                   Mac_arp = str(arp_host)
-                   Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
-                   Mac = str(re.findall(Macaddr ,Mac_arp)).replace("['",'').replace("']","")
-                   if "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) ==  str(ipaddress.ip_address(host_ip)) :
-                          print(Y+D+I+"[*] Mac-Address     ..............|-",Mac_Interface)
-                          if self.args.output :
-                                 printF = str("[*] Mac-Address     ..............|- "+Mac_Interface).strip()
-                                 with open (self.args.output,'a') as out_put :
-                                      out_put.write(str(printF+"\n"))
-                          interfaceMac = Mac_Interface[0:8].replace(":","").upper() 
+                  printF = str("[*] Mac-Address     ..............|- "+Mac_Interface).strip()
+                         with open (self.args.output,'a') as out_put :
+                              out_put.write(str(printF+"\n"))
+            interfaceMac = Mac_Interface[0:8].replace(":","").upper() 
  ```
  <img src = "images/2.png" width=450>  <img src = "images/1.png" width=450>
 
@@ -56,42 +56,43 @@
 * [more info](https://www.winsocketdotnetworkprogramming.com/clientserversocketnetworkcommunication8n.html)
 * downbelow the part of the code working in raw socket , send the raw  data to the Network broadcast after pack the   data to raw bytes ,and received arp replay , then unpack raw data
  ,then slice ip header data  ,then print the info
-```python for Host in Network .hosts():
-                        Host = str(Host)
-                        rawSocket = socket.socket(socket.PF_PACKET, socket.SOCK_RAW,socket.htons(0x0806))                     
-                        rawSocket.settimeout(.20)
-                        rawSocket.bind((self.args.Interface,0x0806))
-                        source_ip  = bytes(host_ip.encode('utf-8'))
-                        dest_ip    = bytes(Host.encode('utf-8'))
-                        if dest_ip == source_ip :
-                            Hcount  +=1	    
-                            print(Y+D+I+"[+] HOST OnLine     --------------|  " + Host)
-                            print("[*] Mac-Address     ..............|- " + Mac_Interface)
-                            print("[+] Mac-Vendor      --------------|  " + vendor+'\n')
-                            if self.args.output :
-                                printF += str("[+] HOST OnLine     --------------|  " + Host).strip()+'\n'
-                                printF += str("[*] Mac-Address     ..............|- " + Mac_Interface).strip()+'\n'
-                                printF += str("[+] Mac-Vendor      --------------|  " + vendor).strip()+'\n'
-                                printF +='\n'
-                            interfaceMac = Mac_Interface[0:8].replace(":","").upper()
-                        else:      
-                            source_mac = binascii.unhexlify(Mac_Interface.replace(":",''))
-                            dest_mac   = b"\xff\xff\xff\xff\xff\xff"
-                            protocol   = 0x0806
-                            eth_hdr    = struct.pack("!6s6sH",dest_mac,source_mac,protocol)
-                            htype      = 1
-                            ptype      = 0x0800
-                            hlen       = 6
-                            plen       = 4 
-                            operations = 1
-                            src_ip  = socket.inet_aton(str(source_ip).replace("'","").replace('b',""))
-                            des_ip  = socket.inet_aton(str(dest_ip).replace("'","").replace('b',""))
-                            arp_hdr = struct.pack("!HHBBH6s4s6s4s",htype,ptype,hlen,plen,operations,source_mac,src_ip,dest_mac,des_ip)
-                            Packet         = eth_hdr + arp_hdr
-                            try:
-                                send_packet    = rawSocket.send(Packet) 
-                                recv_replay    = rawSocket.recv(1020)
-                                rawSocket.close() 
+```python 
+for Host in Network .hosts():
+    Host = str(Host)
+    rawSocket = socket.socket(socket.PF_PACKET, socket.SOCK_RAW,socket.htons(0x0806))                     
+    rawSocket.settimeout(.20)
+    rawSocket.bind((self.args.Interface,0x0806))
+    source_ip  = bytes(host_ip.encode('utf-8'))
+    dest_ip    = bytes(Host.encode('utf-8'))
+    if dest_ip == source_ip :
+        Hcount  +=1	    
+        print(Y+D+I+"[+] HOST OnLine     --------------|  " + Host)
+        print("[*] Mac-Address     ..............|- " + Mac_Interface)
+        print("[+] Mac-Vendor      --------------|  " + vendor+'\n')
+        if self.args.output :
+            printF += str("[+] HOST OnLine     --------------|  " + Host).strip()+'\n'
+            printF += str("[*] Mac-Address     ..............|- " + Mac_Interface).strip()+'\n'
+            printF += str("[+] Mac-Vendor      --------------|  " + vendor).strip()+'\n'
+            printF +='\n'
+        interfaceMac = Mac_Interface[0:8].replace(":","").upper()
+    else:      
+         source_mac = binascii.unhexlify(Mac_Interface.replace(":",''))
+         dest_mac   = b"\xff\xff\xff\xff\xff\xff"
+         protocol   = 0x0806
+         eth_hdr    = struct.pack("!6s6sH",dest_mac,source_mac,protocol)
+         htype      = 1
+         ptype      = 0x0800
+         hlen       = 6
+         plen       = 4 
+         operations = 1
+         src_ip  = socket.inet_aton(str(source_ip).replace("'","").replace('b',""))
+         des_ip  = socket.inet_aton(str(dest_ip).replace("'","").replace('b',""))
+         arp_hdr = struct.pack("!HHBBH6s4s6s4s",htype,ptype,hlen,plen,operations,source_mac,src_ip,dest_mac,des_ip)
+         Packet         = eth_hdr + arp_hdr
+         try:
+             send_packet    = rawSocket.send(Packet) 
+             recv_replay    = rawSocket.recv(1020)
+             rawSocket.close() 
 
 ```
 <img src = "images/4.png" width=450>  <img src = "images/3.png" width=450>
