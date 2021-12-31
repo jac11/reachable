@@ -188,9 +188,9 @@ class RangeOfHosts :
                                            out_put.write(str(printF+"\n"))
                                   interfaceMac = Mac_Interface[0:8].replace(":","").upper()
                             else: 
-                                  print(W+D+I+"[*] Mac-Address     ..............|-",Mac)
+                                  print(W+D+I+"[*] Mac-Address     ..............|-",Mac[0:17)
                                   if self.args.output :  
-                                      printF = str("[*] Mac-Address     ..............|- "+Mac).strip()
+                                      printF = str("[*] Mac-Address     ..............|- "+Mac[0:17]).strip()
                                       with open (self.args.output,'a') as out_put :
                                            out_put.write(str(printF+"\n"))
                             MacGET= Mac[0:8].replace(":","").upper()

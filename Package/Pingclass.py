@@ -163,9 +163,9 @@ class Discover_Network():
                                   interfaceMac = Mac_Interface[0:8].replace(":","").upper()
                                   
                            else:
-                                  print(W+D+I+"[*] Mac-Address     ..............|-","".join(Mac))
+                                  print(W+D+I+"[*] Mac-Address     ..............|-","".join(Mac[0:17]))
                                   if self.args.output :  
-                                      printF = str("[*] Mac-Address     ..............|- "+Mac).strip()
+                                      printF = str("[*] Mac-Address     ..............|- "+Mac[0:17]).strip()
                                       with open (self.args.output,'a') as out_put :
                                            out_put.write(str(printF+"\n"))
                            MacGET= str("".join(Mac[0:8])).replace(":","").upper()
