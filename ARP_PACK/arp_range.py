@@ -205,7 +205,7 @@ class Range_arp_host :
                                 if "02" in opcodestr :
                                     Hcount  +=1	
                                     print(B+I+D+"[+] HOST OnLine     --------------|  " + Host)
-                                    print(W+D+I+"[*] Mac-Address     ..............|- " + Mac)
+                                    print(W+D+I+"[*] Mac-Address     ..............|- " + Mac[0:18])
                                     print(D+I+B+"[+] Mac-Vendor      --------------| " + vendor1)
                                     if self.args.output :
                                        printF += str("[+] HOST OnLine     --------------|  " + Host).strip()+'\n'

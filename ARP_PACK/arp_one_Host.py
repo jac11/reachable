@@ -179,7 +179,7 @@ class Arp_Host_One():
                             if "02" in opcodestr :
                                     Hcount  +=1	
                                     print(B+I+D+"[+] HOST OnLine     --------------|  " + Host)
-                                    print(I+W+D+"[+] HOST OnLine     --------------|- " + Mac)
+                                    print(I+W+D+"[+] HOST OnLine     --------------|- " + Mac[0:18])
                                     print(B+I+D+"[+] Mac-Vendor      --------------| " + vendor1)
                                     print(Banner)
                                     exit()

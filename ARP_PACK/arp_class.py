@@ -183,11 +183,11 @@ class Arp_Network():
                                 if "02" in opcodestr :
                                     Hcount  +=1	
                                     print(B+D+I+"[+] HOST OnLine     --------------|  " + Host)
-                                    print(W+D+I+"[*] Mac-Address     ..............|- " + Mac)
+                                    print(W+D+I+"[*] Mac-Address     ..............|- " + Mac[0:17])
                                     print(D+B+I+"[+] Mac-Vendor      --------------| " + vendor1)
                                     if self.args.output :
                                        printF += str("[+] HOST OnLine     --------------|  " + Host).strip()+'\n'
-                                       printF += str("[*] Mac-Address     ..............|- " + Mac).strip()+'\n'
+                                       printF += str("[*] Mac-Address     ..............|- " + Mac[0]).strip()+'\n'
                                        printF += str("[+] Mac-Vendor      --------------| " + vendor1).strip()+'\n'
                                        printF +='\n'
                                 else:
