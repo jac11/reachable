@@ -13,17 +13,17 @@ import subprocess
 import timeit,time
 import struct 
 import binascii 
-
+P= '\033[35m'
 S ='\033[0m' 
 W = "\033[1;37m"
 R = "\033[0;31m"
 D = "\033[1m"
-I = "\033[3m"
+I = ""
 B = '\033[34m'  
 Y='\033[1;33m' 
 
 class Arp_Network():
-          
+         
     def __init__(self):
           self.args_command()
           self.Ping_command()                  
@@ -103,6 +103,7 @@ class Arp_Network():
                    print("[+] Broadcast IP    --------------|- " +  str(Network.broadcast_address))
                    print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Host-discover-"+R+"\n"+"="*20+"\n")
                    if self.args.output:
+                        
                          printF  = ""
                          printF  += ("[+] "+ command_argv)+"\n"
                          printF  += ("\n[*] HOST INFO-\n"+"="*14+"\n")+"\n"
@@ -120,12 +121,20 @@ class Arp_Network():
                          printF  += ("[+] Last ip         --------------|- " +  str([ x for  x  in  Network.hosts()][-1]))+"\n"
                          printF  += ("[+] Number of hosts --------------|- " +  str(Hosts_range ))+"\n"
                          printF  += ("[+] Broadcast IP    --------------|- " +  str(Network.broadcast_address))+"\n"
-                         printF  += ("\n"+"="*50+"\n"+"[*] Host-discover-"+"\n"+"="*20+"\n\n")                 
+                         printF  += ("\n"+"="*50+"\n"+"[*] Host-discover-"+"\n"+"="*20+"\n\n")    
+                         printF += str(" "+"-"*80)+"\n" 
+                         printF += str("|  "+f"{'   Host    ':<23}"+"| "+f"{'    Mac-Address    ':<23}"+"| "+f"{'   Mac-Vondor   ':<28}"+"|")+'\n'
+                         printF += str(" "+"-"*80)+'\n'             
                    scop   = "/"
                    Network  = ipaddress.ip_network('{}{}{}'.format(Network_ID,scop,self.args.network[-2:]))
                    Hcount = 0
                    dcount = 0
+                   print(" "+"-"*80) 
+                   print("|  "+f"{'   Host    ':<23}","| "+f"{'    Mac-Address    ':<23}"+"| ",f"{'   Mac-Vondor   ':<25}","|")
+                   print(" "+"-"*80)
+                  
                    for Host in Network .hosts():
+                         
                         Host = str(Host)
                         rawSocket = socket.socket(socket.PF_PACKET, socket.SOCK_RAW,socket.htons(0x0806))                     
                         rawSocket.settimeout(.20)
@@ -133,15 +142,10 @@ class Arp_Network():
                         source_ip  = bytes(host_ip.encode('utf-8'))
                         dest_ip    = bytes(Host.encode('utf-8'))
                         if dest_ip == source_ip :
-                            Hcount  +=1	    
-                            print(Y+D+I+"[+] HOST OnLine     --------------|  " + Host)
-                            print("[*] Mac-Address     ..............|- " + Mac_Interface)
-                            print("[+] Mac-Vendor      --------------|  " + vendor+'\n')
-                            if self.args.output :
-                                printF += str("[+] HOST OnLine     --------------|  " + Host).strip()+'\n'
-                                printF += str("[*] Mac-Address     ..............|- " + Mac_Interface).strip()+'\n'
-                                printF += str("[+] Mac-Vendor      --------------|  " + vendor).strip()+'\n'
-                                printF +='\n'
+                            Hcount  +=1	   
+                            print(R+"|  "+Y+f"{Host:<23}",R+"|   "+Y+f"{Mac_Interface:<21}"+R+"|  "+Y+f"{vendor:<25}",R+"|")  
+                            if self.args.output : 
+                                printF +="|  "+f"{Host:<23}"+"|   "+f"{Mac_Interface:<21}"+"|  "+f"{vendor:<27}"+"|"+'\n'  
                             interfaceMac = Mac_Interface[0:8].replace(":","").upper()
                         else:      
                             source_mac = binascii.unhexlify(Mac_Interface.replace(":",''))
@@ -181,26 +185,18 @@ class Arp_Network():
                                         vendor1 = " Unknown-MAC" 
                                     count += 1           
                                 if "02" in opcodestr :
-                                    Hcount  +=1	
-                                    print(B+D+I+"[+] HOST OnLine     --------------|  " + Host)
-                                    print(W+D+I+"[*] Mac-Address     ..............|- " + Mac[0:17])
-                                    print(D+B+I+"[+] Mac-Vendor      --------------| " + vendor1)
+                                    Hcount  +=1	                                                                             
+                                    print(R+"|  "+B+f"{Host:<23}",R+"|   "+P+f"{Mac:<21}"+R+"| "+W+f"{vendor1[0:23]:<25}"+R+"  |"+R)
                                     if self.args.output :
-                                       printF += str("[+] HOST OnLine     --------------|  " + Host).strip()+'\n'
-                                       printF += str("[*] Mac-Address     ..............|- " + Mac[0]).strip()+'\n'
-                                       printF += str("[+] Mac-Vendor      --------------| " + vendor1).strip()+'\n'
-                                       printF +='\n'
+                                       printF +=str("|  "+f"{Host:<23}"+"|   "+f"{Mac:<21}"+"| "+f"{vendor1[0:23]:<26}"+"  |")+'\n'  
                                 else:
-                                     if "01" in opcodestr :
-                                          print(D+I+Y+"[+] TRY HOST        --------------| ",Host,end='')
+                                    if  '1' in opcodestr:                                        
                                           sys.stdout.write('\x1b[1A')
-                                          sys.stdout.write('\x1b[2K')
-                                          pass
-                                print()                             
+                                          sys.stdout.write('\x1b[2K')                       
                             except Exception:
-                                dcount +=1
-                                print(D+I+Y+"[+] TRY HOST        --------------| ",Host)
-                                time.sleep(.20)
+                                dcount +=1 
+                                host_split = Host.split(".")                              
+                                print(R+"|  "+Y+f"{Host:<23}",R+"|"+P+f"{'   00:00:00:00:00:00   ':<21}"+R+" | "+B+f"{'   ----------------   ':<26}",R+"|")
                                 sys.stdout.write('\x1b[1A')
                                 sys.stdout.write('\x1b[2K')
 
@@ -208,7 +204,7 @@ class Arp_Network():
                    sec = stop  - start
                    fix_time = time.gmtime(sec)
                    result = time.strftime("%H:%M:%S",fix_time)                
-                  
+                   
                    print(W+D+I+"\n[*] Scan-Result-\n"+R+"="*14+"\n")
                    print(B+D+I+"[+] Total Hosts       --------------|- " + Y,str(Hosts_range)),S
                    print(B+D+I+"[+] Active Hosts      --------------|- " + Y,str(Hcount)),S
@@ -223,14 +219,16 @@ class Arp_Network():
                       printF += ("[+] Run-Time          --------------|- " + str(result))+"\n"
                       printF +='\n'
                       with open(self.args.output,'w') as out_put :
-                         out_put.write(Banner+'\n\n'+printF+Banner)
+                         out_put.write(Banner1+'\n\n'+printF+Banner1)
+                         id_user =  os.stat("./reachable.py").st_uid 
+                         os.chown("./"+self.args.output, id_user, id_user)
                          exit()
                    else: 
                        exit()   
            except PermissionError :
                    print(I+D+R+"\n"+"="*50+W+D+I+"\n"+"[*]  for arp scan run as root or sudo privileges   "+R+D+"\n"+"="*50+"\n")       
-           except Exception:
-                print(R+"\n"+"="*50+W+D+I+"\n"+"[*] ValueError (",self.args.network,")-------------| wrong format IP "+R+"\n"+"="*50+"\n")
+          # except Exception:
+           #     print(R+"\n"+"="*50+W+D+I+"\n"+"[*] ValueError (",self.args.network,")-------------| wrong format IP "+R+"\n"+"="*50+"\n")
            except KeyboardInterrupt:
                print(Banner)
                if self.args.output:
