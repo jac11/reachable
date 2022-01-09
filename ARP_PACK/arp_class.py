@@ -218,21 +218,21 @@ class Arp_Network():
                       printF += ("[+] Inactive Hosts    --------------|- " + str(Hosts_range- Hcount))+"\n"
                       printF += ("[+] Run-Time          --------------|- " + str(result))+"\n"
                       printF +='\n'
-                      with open(self.args.output,'w') as out_put :
+                      with open("./Scan-Store/"+self.args.output,'w') as out_put :
                          out_put.write(Banner1+'\n\n'+printF+Banner1)
                          id_user =  os.stat("./reachable.py").st_uid 
-                         os.chown("./"+self.args.output, id_user, id_user)
+                         os.chown("./Scan-Store/"+self.args.output, id_user, id_user)
                          exit()
                    else: 
                        exit()   
            except PermissionError :
                    print(I+D+R+"\n"+"="*50+W+D+I+"\n"+"[*]  for arp scan run as root or sudo privileges   "+R+D+"\n"+"="*50+"\n")       
-          # except Exception:
-           #     print(R+"\n"+"="*50+W+D+I+"\n"+"[*] ValueError (",self.args.network,")-------------| wrong format IP "+R+"\n"+"="*50+"\n")
+          except Exception:
+                print(R+"\n"+"="*50+W+D+I+"\n"+"[*] ValueError (",self.args.network,")-------------| wrong format IP "+R+"\n"+"="*50+"\n")
            except KeyboardInterrupt:
                print(Banner)
                if self.args.output:
-                  with open(self.args.output,'a') as out_put :
+                  with open("./Scan-Store/"+self.args.output,'a') as out_put :
                      out_put.write(Banner)
                 
     def args_command(self):

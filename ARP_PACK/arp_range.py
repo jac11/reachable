@@ -239,10 +239,10 @@ class Range_arp_host :
                       printF += ("[+] Run-Time          --------------|- " + str(result))+"\n"
                       printF +='\n'
                if self.args.output :          
-                    with open(str(self.args.output),'w') as out_put :
+                    with open("./Scan-Store/"+self.args.output,'w') as out_put :
                         out_put.write(Banner1+'\n'+printF+Banner1)   
                         id_user =  os.stat("./reachable.py").st_uid 
-                        os.chown('./'+self.args.output, id_user, id_user)
+                        os.chown("./Scan-Store/"+self.args.output, id_user, id_user)
            except PermissionError :
                    print(I+D+R+"\n"+"="*50+W+D+I+"\n"+"[*] for arp scan run as root or sudo privileges   "+R+D+"\n"+"="*50+"\n")           
            except Exception:
