@@ -12,8 +12,9 @@ from Package.Banner import *
 import subprocess 
 import timeit,time
 import struct 
-import binascii 
-  
+import binascii
+ 
+P= '\033[35m'
 W= "\033[1;37m"
 R = "\033[0;31m"
 D = "\033[1m"
@@ -89,9 +90,7 @@ class Arp_Host_One():
                           elif Mac_Get not  in line  : 
                              vendor = "Unknown-MAC"
                           count += 1
-                      if "sudo" not in sys.argv[1]:
-                         print(I+D+R+"\n"+"="*50+W+D+I+"\n"+"[*]  for arp scan run as root or sudo privileges  "+R+D+"\n"+"="*50+"\n")
-                         exit()       
+   
                       print(D+W+I+"\n[*] HOST INFO-\n"+R+"="*14+"\n")
                       print(I+D+B+"[+] HOST-IP         --------------|- " +  host_ip )
                       print("[+] Mac-Address     --------------|- " +  Mac_Interface)
@@ -130,12 +129,15 @@ class Arp_Host_One():
                    rawSocket.bind((self.args.Interface,0x0806))
                    source_ip  = bytes(host_ip.encode('utf-8'))
                    dest_ip    = bytes(Host.encode('utf-8'))
+                   print(" "+"-"*80) 
+                   print("|  "+f"{'   Host    ':<23}","| "+f"{'    Mac-Address    ':<23}"+"| ",f"{'   Mac-Vondor   ':<25}","|")
+                   print(" "+"-"*80)
                    if dest_ip == source_ip :
                         Hcount  +=1	    
-                        print(Y+D+I+"[+] HOST OnLine     --------------|  " + Host)
-                        print("[*] Mac-Address     ..............|- " + Mac_Interface)
-                        print("[+] Mac-Vendor      --------------|  " + vendor+'\n')
-                        
+                        print(R+"|  "+Y+f"{Host:<23}",R+"|   "+Y+f"{Mac_Interface:<21}"+R+"|  "+Y+f"{vendor:<25}",R+"|")  
+                        print(Banner)
+                        print()
+                        exit()
                         interfaceMac = Mac_Interface[0:8].replace(":","").upper()
                    else:      
                         source_mac = binascii.unhexlify(Mac_Interface.replace(":",''))
@@ -178,9 +180,8 @@ class Arp_Host_One():
                                           
                             if "02" in opcodestr :
                                     Hcount  +=1	
-                                    print(B+I+D+"[+] HOST OnLine     --------------|  " + Host)
-                                    print(I+W+D+"[+] HOST OnLine     --------------|- " + Mac[0:18])
-                                    print(B+I+D+"[+] Mac-Vendor      --------------| " + vendor1)
+                                    print(R+"|  "+B+f"{Host:<23}",R+"|   "+P+f"{Mac:<21}"+R+"| "+W+f"{vendor1[0:23]:<25}"+R+"  |"+R)
+                                    print()
                                     print(Banner)
                                     exit()
                             else:
@@ -188,11 +189,15 @@ class Arp_Host_One():
                                  pass                                      
                         except Exception:
                                 dcount +=1
-                                print(B+I+D+"[+] Host is down        --------------| ",Host)
+                                Mac = "00:00:00:00:00:00:00"
+                                print(R+"|  "+B+f"{Host:<23}",R+"|   "+P+f"{Mac:<21}"+R+"| "+W+f"{'Host is down':<25}"+R+"  |"+R)
+                                print()
                                 print(Banner)
+                                exit()
                except PermissionError :
-                   print(I+D+R+"\n"+"="*50+W+D+I+"\n"+"[*]  for arp scan run as root \
-                   or sudo privileges   "+R+D+"\n"+"="*50+"\n")                   exit()
+                   print(I+D+R+"\n"+"="*50+W+D+I+"\n"+"[*]  for arp scan run as root\
+                   or sudo privileges   "+R+D+"\n"+"="*50+"\n")                   
+                   exit()
                except Exception  :                       
                       print(R+D+I+"\n"+"="*50+"\n"+W+I+D+"[*] HOST ("+self.args.Host+")   -------------| ValueError"+R+D+I+"\n"+"="*50+"\n")
                except KeyboardInterrupt:
