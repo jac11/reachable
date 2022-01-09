@@ -2,6 +2,7 @@
 import argparse
 import sys
 from Package.Banner import *
+import os
 
 S='\033[0m' 
 W = "\033[1;37m"
@@ -21,38 +22,49 @@ class Run :
            if self.args.network and not self.args.start and not self.args.end and not self.args.Interface:
              
               from Package.Pingclass import  Discover_Network
-              print("\t\t\t      PING-SCAN"+"\n\t\t        "+"+"*20+"\n")
+              print("--PING-SCAN"+"\n"+"+"*20)
               run = Discover_Network()
+              id_user =  os.stat("./reachable.py").st_uid 
+              os.chown('./'+self.args.output, id_user, id_user)
               exit()
            elif self.args.start and self.args.end and not self.args.Interface and not self.args.Interface:
               
               from Package.HostRange import RangeOfHosts
-              print("\t\t\t      PING-SCAN"+"\n\t\t        "+"+"*20+"\n")
+              print("--PING-SCAN"+"\n"+"+"*20)
               run = RangeOfHosts()
+              id_user =  os.stat("./reachable.py").st_uid 
+              os.chown('./'+self.args.output, id_user, id_user)
               exit()
            elif self.args.Host and not self.args.Interface:
               
                  from Package.OneHost import  Host_One
-                 print("\t\t\t      PING-SCAN"+"\n\t\t        "+"+"*20+"\n")
+                 print("--PING-SCAN"+"\n"+"+"*20)
                  run = Host_One()
+                 id_user =  os.stat("./reachable.py").st_uid 
+                 os.chown('./'+self.args.output, id_user, id_user)
                  exit()
            elif self.args.network and not self.args.start and not self.args.end and self.args.Interface:
              
               from ARP_PACK.arp_class import Arp_Network
-              print("\t\t\t      ARP-SCAN"+"\n\t\t        "+"+"*20+"\n")
+              print("--ARP-SCAN"+"\n"+"+"*20)
               run = Arp_Network()
+              
               exit()
            elif self.args.start and self.args.end and self.args.Interface :
               
               from ARP_PACK.arp_range import Range_arp_host
-              print("\t\t\t      ARP-SCAN"+"\n\t\t        "+"+"*20+"\n")
+              print("--ARP-SCAN"+"\n"+"+"*20)
               run = Range_arp_host()
+              id_user =  os.stat("./reachable.py").st_uid 
+              os.chown('./'+self.args.output, id_user, id_user)
               exit()
            elif self.args.Host and self.args.Interface:
               
                  from ARP_PACK.arp_one_Host import  Arp_Host_One
-                 print(B+"\t\t\t      ARP-SCAN"+"\n\t\t        "+"+"*20+"\n")
+                 print(B+"--ARP-SCAN"+"\n"+"+"*20)
                  run = Arp_Host_One()
+                 id_user =  os.stat("./reachable.py").st_uid 
+                 os.chown('./'+self.args.output, id_user, id_user)
                  exit()      
         def args_command(self):
               print(B+"")
