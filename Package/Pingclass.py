@@ -11,7 +11,7 @@ from subprocess import Popen, PIPE, check_output
 from Package.Banner import *
 import subprocess 
 import timeit,time
-
+P= '\033[35m'
 S='\033[0m' 
 W = "\033[1;37m"
 R = "\033[0;31m"
@@ -121,58 +121,32 @@ class Discover_Network():
                          printF  += ("[+] Number of hosts --------------|- " +  str(Hosts_range ))+"\n"
                          printF  += ("[+] Broadcast IP    --------------|- " +  str(Network.broadcast_address))+"\n"
                          printF  += ("\n"+"="*50+"\n"+"[*] Host-discover-"+"\n"+"="*20+"\n\n")
-                         with open(self.args.output,"w+") as out_put:
-                             out_put.write(Banner1+'\n'+"\n"+printF)                           
+                         printF += str(" "+"-"*80)+"\n" 
+                         printF += str("|  "+f"{'   Host    ':<23}"+"| "+f"{'    Mac-Address    ':<23}"+"| "+f"{'   Mac-Vondor   ':<28}"+"|")+'\n'
+                         printF += str(" "+"-"*80)+'\n'             
+                         
+                   print(" "+"-"*80) 
+                   print("|  "+f"{'   Host    ':<23}","| "+f"{'    Mac-Address    ':<23}"+"| ",f"{'   Mac-Vondor   ':<25}","|")
+                   print(" "+"-"*80)                                    
                    Hcount = 0
                    dcount = 0
                    for Host in Network .hosts():
                        Host = str(Host)
                        DisCover = Popen(["ping", "-w1",Host], stdout=PIPE)
                        output   = DisCover.communicate()[0]
-                       respons  = DisCover.returncode                       
+                       respons  = DisCover.returncode  
+                                            
                        if respons == 0:
-                           Hcount  +=1	
-                           if Host == host_ip:
-                                 print(Y+I+D+"[+] HOST OnLine     --------------| ",host_ip)
-                           else:
-                                print(B+I+D+"[+] HOST OnLine     --------------| ",Host)
-                          
-                           if self.args.output :
-                             printF = str("[+] HOST OnLine     --------------|  " + Host).strip()
-                             with  open (self.args.output,"a") as out_put :
-                                 out_put.write(printF+"\n")
                            pid = Popen(["arp", "-a", Host], stdout=PIPE)
                            arp_host = pid.communicate()[0]                          
                            Mac_arp = str(arp_host)
                            Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
                            Mac = str(re.findall(Macaddr ,Mac_arp)).replace("['",'').replace("']","")
-                           if "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) ==  str(ipaddress.ip_address(host_ip)) :
-                                  print(Y+D+I+"[*] Mac-Address     ..............|-",Mac_Interface)
-                                  if self.args.output :
-                                      printF = str("[*] Mac-Address     ..............|- "+Mac_Interface).strip()
-                                      with open (self.args.output,'a') as out_put :
-                                           out_put.write(str(printF+"\n"))
-                                  interfaceMac = Mac_Interface[0:8].replace(":","").upper() 
-                                 
-                           elif "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) != str(ipaddress.ip_address(host_ip)) :                     
-                                  print(B+D+I+"[*] Mac-Address     ..............|- None")
-                                  if self.args.output :
-                                      printF = str("[*] Mac-Address     ..............|- None")
-                                      with open (self.args.output,'a') as out_put :
-                                           out_put.write(str(printF+"\n"))
-                                  interfaceMac = Mac_Interface[0:8].replace(":","").upper()
-                                  
-                           else:
-                                  print(W+D+I+"[*] Mac-Address     ..............|-","".join(Mac[0:17]))
-                                  if self.args.output :  
-                                      printF = str("[*] Mac-Address     ..............|- "+Mac[0:17]).strip()
-                                      with open (self.args.output,'a') as out_put :
-                                           out_put.write(str(printF+"\n"))
+                          	
                            MacGET= str("".join(Mac[0:8])).replace(":","").upper()
                            Macdb = open('Package/mac-vendor.txt', 'r')
                            MacFile = Macdb.readlines()
                            count = 0
-                           
                            for line in MacFile:
                                line = line.strip()
                                if MacGET in line  : 
@@ -182,37 +156,30 @@ class Discover_Network():
                                     vendor1 = " Unknown-MAC" 
                                count += 1  
                                
-                           if "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) ==  str(ipaddress.ip_address(host_ip)) : 
-                                   
-                                   print("[+] Mac-Vendor      --------------|  " +vendor)
-                                   if  self.args.output :
-                                        printF = str("[+] Mac-Vendor      --------------|  " +vendor).strip()
-                                        with open(self.args.output ,"a") as out_put :
-                                            out_put.write(str(printF+"\n"))
-                                   
-                           elif "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) != str(ipaddress.ip_address(host_ip)) :
-                                   print(B+D+I+"[+] Mac-Vendor      --------------|  None ")
-                                   if  self.args.output :
-                                        printF = str("[+] Mac-Vendor      --------------|  None")
-                                        with open(self.args.output ,"a") as out_put :
-                                            out_put.write(str(printF+"\n"))
-                            
+                           if Host == host_ip and \
+                           "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) ==  str(ipaddress.ip_address(host_ip)) :
+                                print(R+"|  "+Y+f"{Host:<23}",R+"|   "+Y+f"{Mac_Interface:<21}"+R+"|  "+Y+f"{vendor:<25}",R+"|") 
+                                Hcount  +=1 
+                                if self.args.output : 
+                                    printF +="|  "+f"{Host:<23}"+"|   "+f"{Mac_Interface:<21}"+"|  "+f"{vendor:<27}"+"|"+'\n'                                                                  
+                           elif "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) != str(ipaddress.ip_address(host_ip)) :                     
+                                print(R+"|  "+Y+f"{Host:<23}",R+"|"+P+f"{'   ------None-----    ':<23}"+R+" | "+B+f"{'  ------None----- ':<25}",R+" |")
+                                Hcount  +=1
+                                if self.args.output : 
+                                   printF +=("|  "+f"{Host:<23}"+"|"+f"{'   ------None-----    ':<23}"+" | "+f"{'  ------None----- ':<26}"+"  |")+'\n'                                  
                            else: 
-                                   print(B+D+I+"[+] Mac-Vendor      --------------| " +vendor1)
-                                   if self.args.output :    
-                                        printF = str("[+] Mac-Vendor      --------------| " +vendor1).strip()
-                                        with open(self.args.output ,"a") as out_put :
-                                            out_put.write(str(printF+"\n"))           
-                           print() 
-                           if self.args.output:
-                              with open(self.args.output,"a") as out_put :
-                                   out_put.write("\n")
-
+                                Hcount  +=1	                                                                             
+                                print(R+"|  "+B+f"{Host:<23}",R+"|   "+P+f"{Mac:<21}"+R+"| "+W+f"{vendor1[0:23]:<25}"+R+"  |"+R)
+                                if self.args.output :
+                                     printF +=str("|  "+f"{Host:<23}"+"|   "+f"{Mac:<21}"+"| "+f"{vendor1[0:23]:<26}"+"  |")+'\n'
                        else:
-                           dcount +=1
-                           print(D+I+Y+"[+] TRY HOST        --------------| ",Host)
+                           dcount +=1 
+                           host_split = Host.split(".")                              
+                           print(R+"|  "+Y+f"{Host:<23}",R+"|"+P+f"{'   00:00:00:00:00:00   ':<21}"+R+" | "+B+f"{'   ----------------   ':<26}",R+"|")
                            sys.stdout.write('\x1b[1A')
                            sys.stdout.write('\x1b[2K')
+                   with open("./Scan-Store/"+self.args.output,"w+") as out_put:
+                        out_put.write(Banner1+'\n'+"\n"+printF) 
                    stop = timeit.default_timer()
                    sec = stop  - start
                    fix_time = time.gmtime(sec)
@@ -232,7 +199,7 @@ class Discover_Network():
                       printF += ("[+] Active Hosts      --------------|- " +  str(Hcount))+"\n"
                       printF += ("[+] Inactive Hosts    --------------|- " +  str(dcount))+"\n"
                       printF += ("[+] Run-Time          --------------|- " +  str(result))+"\n"
-                      with open(self.args.output,'a') as out_put :
+                      with open("./Scan-Store/"+self.args.output,'a') as out_put :
                           out_put.write(printF+Banner1)
                         
           # except Exception:
