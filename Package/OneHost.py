@@ -18,7 +18,7 @@ D = "\033[1m"
 I = "\033[3m"
 B = '\033[34m'  
 Y='\033[1;33m'
-
+P= '\033[35m'
 try:
     host_name  = socket.gethostname() 
     host_ip    = str(check_output(['hostname', '--all-ip-addresses'],stderr=subprocess.PIPE)).\
@@ -135,102 +135,65 @@ class Host_One():
                            printF  += ("[+] Number of hosts --------------|- " +  str(Hosts_range ))+"\n"
                            printF  += ("[+] Broadcast IP    --------------|- " +  str(Network.broadcast_address))+"\n"
                            printF  += ("\n"+"="*50+"\n"+"[*] Host-discover-"+"\n"+"="*20+"\n\n")
+                           printF += str(" "+"-"*80)+"\n" 
+                           printF += str("|  "+f"{'   Host    ':<23}"+"| "+f"{'    Mac-Address    ':<23}"+"| "+f"{'   Mac-Vondor   ':<28}"+"|")+'\n'
+                           printF += str(" "+"-"*80)+'\n'             
                            with open(self.args.output,"w+") as out_put:
                                 out_put.write(Banner+"\n"+printF)
-                             
+                   print(" "+"-"*80) 
+                   print("|  "+f"{'   Host    ':<23}","| "+f"{'    Mac-Address    ':<23}"+"| ",f"{'   Mac-Vondor   ':<25}","|")
+                   print(" "+"-"*80)                         
                    if "/"in self.args.Host:
                         Host = self.args.Host.replace(self.args.Host[-3:],"")
                    else:
                         Host = self.args.Host
-                   DisCover  = Popen(["ping", "-w1",Host], stdout=PIPE)
-                   output    = DisCover.communicate()[0]
-                   respons   = DisCover.returncode
-                   
+                   Host = str(Host)
+                   DisCover = Popen(["ping", "-w1",Host], stdout=PIPE)
+                   output   = DisCover.communicate()[0]
+                   respons  = DisCover.returncode       
+                   pid = Popen(["arp", "-a", Host], stdout=PIPE)
+                   arp_host = pid.communicate()[0]                          
+                   Mac_arp = str(arp_host)
+                   Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
+                   Mac = str(re.findall(Macaddr ,Mac_arp)).replace("['",'').replace("']","")       	
+                   MacGET= str("".join(Mac[0:8])).replace(":","").upper()
+                   Macdb = open('Package/mac-vendor.txt', 'r')
+                   MacFile = Macdb.readlines()
+                   count = 0
+                   for line in MacFile:
+                       line = line.strip()
+                       if MacGET in line  : 
+                          vendor1 = line[7:].replace("    ","")  
+                          break
+                       elif MacGET not  in line:
+                            vendor1 = " Unknown-MAC" 
+                            count += 1  
                    if respons == 0:
-                         if Host == host_ip:
-                              print(Y+I+D+"[+] HOST OnLine     --------------| ",host_ip)
-                         else:
-                              print(B+I+D+"[+] HOST OnLine     --------------| ",Host)
-                          
-                         if self.args.output :
-                             printF = str("[+] HOST OnLine     --------------|  " + Host).strip()
-                             with  open (self.args.output,"a") as out_put :
-                                  out_put.write(printF+"\n")
-                         pid = Popen(["arp", "-a", Host], stdout=PIPE)
-                         arp_host = pid.communicate()[0]
-                         Mac_arp = str(arp_host)
-                         Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
-                         Mac = str(re.findall(Macaddr ,Mac_arp)).replace("['",'').replace("']","")
-                         if host_ip == Host :
-                               print(Y+D+I+"[*] Mac-Address     ..............|-",Mac_Interface)
-                               if self.args.output :
-                                  printF = str("[*] Mac-Address     ..............|- "+Mac_Interface).strip()
-                                  with open (self.args.output,'a') as out_put :
-                                        out_put.write(str(printF+"\n"))
-                               interfaceMac = Mac_Interface[0:8].replace(":","").upper()
+                         if Host == host_ip and \
+                           "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) ==  str(ipaddress.ip_address(host_ip)) :
+                                print(R+"|  "+Y+f"{Host:<23}",R+"|   "+Y+f"{Mac_Interface:<21}"+R+"|  "+Y+f"{vendor:<25}",R+"|") 
                                  
-                         elif "no match found" in Mac_arp and host_ip != Host :
-                               print(B+D+I+"[*] Mac-Address     ..............|- None")
-                               if self.args.output :
-                                  printF = str("[*] Mac-Address     ..............|- None")
-                                  with open (self.args.output,'a') as out_put :
-                                        out_put.write(str(printF+"\n"))
-                                  interfaceMac = Mac_Interface[0:8].replace(":","").upper()
-                                 
-                         else:
-                               print(W+D+I+"[*] Mac-Address     ..............|-",Mac[0:17])
-                               if self.args.output :  
-                                  printF = str("[*] Mac-Address     ..............|- "+Mac[0:17]).strip()
-                                  with open (self.args.output,'a') as out_put :
-                                        out_put.write(str(printF+"\n"))
-                             #  interfaceMac = Mac_Interface[0:8].replace(":","").upper()     
-                         MacGET= Mac[0:8].replace(":","").upper()
-
-                         Macdb = open('Package/mac-vendor.txt', 'r')
-                         MacFile = Macdb.readlines()
-                         
-                         count = 0
-                         for line in MacFile  :
-                            
-                             line = line.strip()
-                             if  MacGET in line  : 
-                                 vendor1 = line[7:].strip()
-                                 break
-                             elif  MacGET not  in line  : 
-                                 vendor1 = " Unknown-MAC" 
-                             count += 1                              
-  
-                         if host_ip == Host :
-                               print(Y+D+I+"[+] Mac-Vendor      --------------|  " +vendor)
-                               if self.args.output :
-                                  printF = str("[+] Mac-Vendor      --------------|  " +vendor).strip()
-                                  with open(self.args.output ,"a") as out_put :
-                                       out_put.write(str(printF+"\n"))
-                                      
-                         elif "None" in Mac and host_ip != Host :
-                               print(B+D+I+"[+] Mac-Vendor      --------------|  None ")
-                               if self.args.output :
-                                  printF = str("[+] Mac-Vendor      --------------|  None")
-                                  with open(self.args.output ,"a") as out_put :
-                                       out_put.write(str(printF+"\n"))
-                         else:
-                               print(I+D+B+"[+] Mac-Vendor      --------------|  " +vendor1)
-                               if self.args.output :    
-                                  printF = str("[+] Mac-Vendor      --------------| " +vendor1).strip()
-                                  with open(self.args.output ,"a") as out_put :
-                                        out_put.write(str(printF+"\n"))           
-                         print()
-                         if self.args.output:
-                               with open(self.args.output,"a") as out_put :
-                                    out_put.write("\n")
+                                if self.args.output : 
+                                    printF +="|  "+f"{Host:<23}"+"|   "+f"{Mac_Interface:<21}"+"|  "+f"{vendor:<27}"+"|"+'\n'                                                                  
+                         elif "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) != str(ipaddress.ip_address(host_ip)) :                     
+                                print(R+"|  "+Y+f"{Host:<23}",R+"|"+P+f"{'   ------None-----    ':<23}"+R+" | "+B+f"{'  ------None----- ':<25}",R+" |")
+                                
+                                if self.args.output : 
+                                   printF +=("|  "+f"{Host:<23}"+"|"+f"{'   ------None-----    ':<23}"+" | "+f"{'  ------None----- ':<26}"+"  |")+'\n'                                  
+                         else:                    	                                                                             
+                              print(R+"|  "+B+f"{Host:<23}",R+"|   "+P+f"{Mac:<21}"+R+"| "+W+f"{vendor1[0:23]:<25}"+R+"  |"+R)
+                              if self.args.output :
+                                 printF +=str("|  "+f"{Host:<23}"+"|   "+f"{Mac:<21}"+"| "+f"{vendor1[0:23]:<26}"+"  |")+'\n'
                    else:
-                         print(I+R+D+"[*] HOST  (",Host,")   -------------| Not response !!")      
-                   print(Banner) 
-                   if self.args.output:
-                         with open(self.args.output,'a') as out_put :
-                              out_put.write(Banner) 
-               except Exception  :                       
-                      print(R+"\n"+"="*50+"\n"+D+I+W+"[*] HOST (",self.args.Host,")   -------------| ValueError"+R+"\n"+"="*50+"\n")
+                         
+                           host_split = Host.split(".")                              
+                           print(R+"|  "+Y+f"{Host:<23}",R+"|"+P+f"{'   00:00:00:00:00:00   ':<21}"+R+" | "+B+f"{'   HOST DONW          ':<26}",R+"|")
+                   print(Banner)       
+                   if self.args.output :          
+                       with open("./Scan-Store/"+self.args.output,"w+") as out_put:
+                          out_put.write(Banner1+'\n'+"\n"+printF) 
+               #except Exception  :                       
+                #      print(R+"\n"+"="*50+"\n"+D+I+W+"[*] HOST (",self.args.Host,")   -------------| ValueError"+R+"\n"+"="*50+"\n")
                except KeyboardInterrupt:
                       print(Banner)
                       if self.args.output:
