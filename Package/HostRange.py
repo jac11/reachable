@@ -233,14 +233,14 @@ class RangeOfHosts :
                              printF  += ("[+] Inactive Hosts  --------------|- " +  str(dcount))+"\n"
                              printF  += ("[+] Run-Time        --------------|- " +  str(result))+"\n"
                              
-                        with open(""self.args.output,'a') as out_put :
+                        with open("./Scan-Store/"+self.args.output,"w+") as out_put :
                              out_put.write(Banner1+'\n'+printF+"\n"+Banner1)        
              except Exception:
                   print(R+"\n"+"="*50+"\n"+W+I+D+"[*] HOST (",self.args.network,")   -------------| ValueError"+R+"\n"+"="*50+"\n")
              except KeyboardInterrupt:
                   print(Banner)
                   if self.args.output:
-                      with open(self.args.output,'a') as out_put :
+                     with open("./Scan-Store/"+self.args.output,"w+") as out_put:
                            out_put.write(Banner1+'\n'+printF+"\n"+Banner1) 
       def args_command(self):
               parser = argparse.ArgumentParser( description="Usage: <OPtion> <arguments> ")
