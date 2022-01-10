@@ -201,7 +201,12 @@ class Arp_Host_One():
                except Exception  :                       
                       print(R+D+I+"\n"+"="*50+"\n"+W+I+D+"[*] HOST ("+self.args.Host+")   -------------| ValueError"+R+D+I+"\n"+"="*50+"\n")
                except KeyboardInterrupt:
-                      print(Banner)
+                     print(Banner)
+                     if self.args.output :          
+                         with open("./Scan-Store/"+self.args.output,'w') as out_put :
+                              out_put.write(Banner1+'\n'+printF+Banner1)   
+                              id_user =  os.stat("./reachable.py").st_uid 
+                              os.chown("./Scan-Store/"+self.args.output, id_user, id_user)
                       
         def args_command(self):
               parser = argparse.ArgumentParser( description="Usage: <OPtion> <arguments> ")          

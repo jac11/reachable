@@ -230,10 +230,12 @@ class Arp_Network():
           except Exception:
                 print(R+"\n"+"="*50+W+D+I+"\n"+"[*] ValueError (",self.args.network,")-------------| wrong format IP "+R+"\n"+"="*50+"\n")
            except KeyboardInterrupt:
-               print(Banner)
-               if self.args.output:
-                  with open("./Scan-Store/"+self.args.output,'a') as out_put :
-                     out_put.write(Banner)
+                  print(Banner)
+                  if self.args.output :          
+                       with open("./Scan-Store/"+self.args.output,'w') as out_put :
+                            out_put.write(Banner1+'\n'+printF+Banner1)   
+                            id_user =  os.stat("./reachable.py").st_uid 
+                            os.chown("./Scan-Store/"+self.args.output, id_user, id_user)
                 
     def args_command(self):
             parser = argparse.ArgumentParser( description="Usage: <OPtion> <arguments> ")
