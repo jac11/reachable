@@ -178,8 +178,9 @@ class Discover_Network():
                            print(R+"|  "+Y+f"{Host:<23}",R+"|"+P+f"{'   00:00:00:00:00:00   ':<21}"+R+" | "+B+f"{'   ----------------   ':<26}",R+"|")
                            sys.stdout.write('\x1b[1A')
                            sys.stdout.write('\x1b[2K')
-                   with open("./Scan-Store/"+self.args.output,"w+") as out_put:
-                        out_put.write(Banner1+'\n'+"\n"+printF) 
+                   if self.args.output :   
+                      with open("./Scan-Store/"+self.args.output,"w+") as out_put:
+                           out_put.write(Banner1+'\n'+"\n"+printF) 
                    stop = timeit.default_timer()
                    sec = stop  - start
                    fix_time = time.gmtime(sec)
