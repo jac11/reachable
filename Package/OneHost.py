@@ -191,15 +191,14 @@ class Host_One():
                    print(Banner)       
                    if self.args.output :          
                        with open("./Scan-Store/"+self.args.output,"w+") as out_put:
-                          out_put.write(Banner1+'\n'+"\n"+printF) 
+                          out_put.write(Banner1+'\n'+printF+"\n"+Banner1) 
                except Exception  :                       
                       print(R+"\n"+"="*50+"\n"+D+I+W+"[*] HOST (",self.args.Host,")   -------------| ValueError"+R+"\n"+"="*50+"\n")
                except KeyboardInterrupt:
                       print(Banner)
                       if self.args.output:
-                           with open(self.args.output,'a') as out_put :
-                                 out_put.write(Banner)
-                   
+                          with open("./Scan-Store/"+self.args.output,"w+") as out_put:
+                                oout_put.write(Banner1+'\n'+printF+"\n"+Banner1)    
         def args_command(self):
               parser = argparse.ArgumentParser( description="Usage: <OPtion> <arguments> ")          
               parser.add_argument( '-O',"--output"   ,metavar='' , action=None )

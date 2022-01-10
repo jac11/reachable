@@ -178,9 +178,7 @@ class Discover_Network():
                            print(R+"|  "+Y+f"{Host:<23}",R+"|"+P+f"{'   00:00:00:00:00:00   ':<21}"+R+" | "+B+f"{'   ----------------   ':<26}",R+"|")
                            sys.stdout.write('\x1b[1A')
                            sys.stdout.write('\x1b[2K')
-                   if self.args.output :   
-                      with open("./Scan-Store/"+self.args.output,"w+") as out_put:
-                           out_put.write(Banner1+'\n'+"\n"+printF) 
+                   
                    stop = timeit.default_timer()
                    sec = stop  - start
                    fix_time = time.gmtime(sec)
@@ -200,17 +198,18 @@ class Discover_Network():
                       printF += ("[+] Active Hosts      --------------|- " +  str(Hcount))+"\n"
                       printF += ("[+] Inactive Hosts    --------------|- " +  str(dcount))+"\n"
                       printF += ("[+] Run-Time          --------------|- " +  str(result))+"\n"
-                      with open("./Scan-Store/"+self.args.output,'a') as out_put :
-                          out_put.write(printF+Banner1)
-                        
-          # except Exception:
-           #     print(R+"\n"+"="*50+"\n"+W+D+I+"[*] HOST (",self.args.network,")   -------------| ValueError"+R+"\n"+"="*50+"\n")
+                     
+                   if self.args.output :          
+                       with open("./Scan-Store/"+self.args.output,"w+") as out_put:
+                          out_put.write(Banner1+'\n'+printF+"\n"+Banner1)      
+           except Exception:
+                print(R+"\n"+"="*50+"\n"+W+D+I+"[*] HOST (",self.args.network,")   -------------| ValueError"+R+"\n"+"="*50+"\n")
            except KeyboardInterrupt:
                print(Banner)
                if self.args.output:
-                  with open(self.args.output,'a') as out_put :
-                     out_put.write(Banner1)
-                
+                      with open("./Scan-Store/"+self.args.output,"w+") as out_put:
+                          out_put.write(Banner1+'\n'+printF+"\n"+Banner1)  
+               exit()              
     def args_command(self):
             parser = argparse.ArgumentParser( description="Usage: <OPtion> <arguments> ")
             parser.add_argument( '-N',"--network"   ,metavar='' , action=None  )

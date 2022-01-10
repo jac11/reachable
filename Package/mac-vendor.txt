@@ -17327,14 +17327,14 @@
 042AE2  Cisco  Systems,  Inc
 042B58  Shenzhen  Hanzsung  Technology  Co.,Ltd
 042BBB  PicoCELA,  Inc.
-042DB4  First  Property  (Beijing)  Co.,  Ltd  Modern  MOMA  Branch
+042DB4  First  Property  (Beijing)  Co.
 042F56  ATOCS  (Shenzhen)  LTD
 043110  Inspur  Group  Co.,  Ltd.
 0432F4  Partron
 043385  Nanchang  BlackShark  Co.,Ltd.
 043389  HUAWEI  TECHNOLOGIES  CO.,LTD
 0433C2  Intel  Corporate
-0434F6  Motorola  (Wuhan)  Mobility  Technologies  Communication  Co.,  Ltd.
+0434F6  Motorola  (Wuhan)  Mobility  
 043604  Gyeyoung  IT
 043855  SCOPUS  INTERNATIONAL-BELGIUM
 043926  China  Dragon  Technology  Limited
