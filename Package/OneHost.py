@@ -192,8 +192,8 @@ class Host_One():
                    if self.args.output :          
                        with open("./Scan-Store/"+self.args.output,"w+") as out_put:
                           out_put.write(Banner1+'\n'+"\n"+printF) 
-               #except Exception  :                       
-                #      print(R+"\n"+"="*50+"\n"+D+I+W+"[*] HOST (",self.args.Host,")   -------------| ValueError"+R+"\n"+"="*50+"\n")
+               except Exception  :                       
+                      print(R+"\n"+"="*50+"\n"+D+I+W+"[*] HOST (",self.args.Host,")   -------------| ValueError"+R+"\n"+"="*50+"\n")
                except KeyboardInterrupt:
                       print(Banner)
                       if self.args.output:
