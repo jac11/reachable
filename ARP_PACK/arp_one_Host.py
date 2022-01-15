@@ -134,7 +134,7 @@ class Arp_Host_One():
                    print(" "+"-"*80)
                    if dest_ip == source_ip :
                         Hcount  +=1	    
-                        print(R+"|  "+Y+f"{Host:<23}",R+"|   "+Y+f"{Mac_Interface:<21}"+R+"|  "+Y+f"{vendor:<25}",R+"|")  
+                        print(R+"|  "+Y+f"{Host:<23}",R+"|   "+Y+f"{Mac_Interface:<21}"+R+"|  "+Y+f"{vendor[0:23]:<25}",R+"|")  
                         print(Banner)
                         print()
                         exit()
