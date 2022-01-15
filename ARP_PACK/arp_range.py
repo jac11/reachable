@@ -161,9 +161,9 @@ class Range_arp_host :
                         dest_ip    = bytes(Host.encode('utf-8'))
                         if dest_ip == source_ip :
                              Hcount  +=1	    
-                             print(R+"|  "+Y+f"{Host:<23}",R+"|   "+Y+f"{Mac_Interface:<21}"+R+"|  "+Y+f"{vendor:<25}",R+"|")  
+                             print(R+"|  "+Y+f"{Host:<23}",R+"|   "+Y+f"{Mac_Interface:<21}"+R+"|  "+Y+f"{vendor[0:23]:<25}",R+"|")  
                              if self.args.output : 
-                                printF +="|  "+f"{Host:<23}"+"|   "+f"{Mac_Interface:<21}"+"|  "+f"{vendor:<27}"+"|"+'\n'  
+                                printF +="|  "+f"{Host:<23}"+"|   "+f"{Mac_Interface:<21}"+"|  "+f"{vendor[0:23]:<27}"+"|"+'\n'  
                              interfaceMac = Mac_Interface[0:8].replace(":","").upper()
                         else:      
                             source_mac = binascii.unhexlify(Mac_Interface.replace(":",''))
