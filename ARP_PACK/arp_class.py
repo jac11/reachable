@@ -143,9 +143,9 @@ class Arp_Network():
                         dest_ip    = bytes(Host.encode('utf-8'))
                         if dest_ip == source_ip :
                             Hcount  +=1	   
-                            print(R+"|  "+Y+f"{Host:<23}",R+"|   "+Y+f"{Mac_Interface:<21}"+R+"|  "+Y+f"{vendor:<25}",R+"|")  
+                            print(R+"|  "+Y+f"{Host:<23}",R+"|   "+Y+f"{Mac_Interface[0:23]:<21}"+R+"|  "+Y+f"{vendor:<25}",R+"|")  
                             if self.args.output : 
-                                printF +="|  "+f"{Host:<23}"+"|   "+f"{Mac_Interface:<21}"+"|  "+f"{vendor:<27}"+"|"+'\n'  
+                                printF +="|  "+f"{Host:<23}"+"|   "+f"{Mac_Interface[0:23]:<21}"+"|  "+f"{vendor:<27}"+"|"+'\n'  
                             interfaceMac = Mac_Interface[0:8].replace(":","").upper()
                         else:      
                             source_mac = binascii.unhexlify(Mac_Interface.replace(":",''))
@@ -227,7 +227,7 @@ class Arp_Network():
                        exit()   
            except PermissionError :
                    print(I+D+R+"\n"+"="*50+W+D+I+"\n"+"[*]  for arp scan run as root or sudo privileges   "+R+D+"\n"+"="*50+"\n")       
-          except Exception:
+           except Exception:
                 print(R+"\n"+"="*50+W+D+I+"\n"+"[*] ValueError (",self.args.network,")-------------| wrong format IP "+R+"\n"+"="*50+"\n")
            except KeyboardInterrupt:
                   print(Banner)
