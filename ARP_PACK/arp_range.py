@@ -189,11 +189,14 @@ class Range_arp_host :
                                 Mac = "".join("\\x%s"%Mac_Source [i:i+2] for i in range(0, len(Mac_Source ), 2)).replace("\\x","",1).replace("\\x",':')  
                                 unpack1 = str(struct.unpack('!2s',recv_replay[20:22]))   
                                 opcodestr = str(unpack1).replace("b'",'').replace("'",'').replace("\\x","").replace(",",'')\
-                                .replace("(",'').replace(")",'')                               
-                                MacGET= str("".join(Mac[0:8])).replace(":","").upper()
-                                Macdb = open('Package/mac-vendor.txt', 'r')
+                                .replace("(",'').replace(")",'')    
+                                unpack2 = bytes(struct.unpack('!4B',recv_replay[28:32]) )  
+                                ip_int  = int.from_bytes(unpack2, "big") 
+                                ipstr   = socket.inet_ntoa(struct.pack('!L', ip_int))                                                                       
+                                MacGE   = str("".join(Mac[0:8])).replace(":","").upper()
+                                Macdb   = open('Package/mac-vendor.txt', 'r')
                                 MacFile = Macdb.readlines()
-                                count = 0                        
+                                count   = 0                                        
                                 for line in MacFile:
                                     line = line.strip()
                                     if MacGET in line  : 
@@ -203,7 +206,7 @@ class Range_arp_host :
                                         vendor1 = " Unknown-MAC" 
                                     count += 1   
                                           
-                                if "02" in opcodestr :
+                                if "02" in opcodestr and ipstr == Host :
                                     Hcount  +=1	
                                     print(R+"|  "+B+f"{Host:<23}",R+"|   "+P+f"{Mac:<21}"+R+"| "+W+f"{vendor1[0:23]:<25}"+R+"  |"+R)
                                     if self.args.output :
