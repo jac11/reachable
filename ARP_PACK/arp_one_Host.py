@@ -13,7 +13,7 @@ import subprocess
 import timeit,time
 import struct 
 import binascii
- 
+import random
 P= '\033[35m'
 W= "\033[1;37m"
 R = "\033[0;31m"
@@ -40,7 +40,8 @@ class Arp_Host_One():
          
         def __init__(self):
            self.args_command()
-           self.Ping_command()                 
+           self.Ping_command()
+                                
         def Ping_command(self):
                try:
                    if self.args.Host or (self.args.Host and self.args.output) :
@@ -90,10 +91,9 @@ class Arp_Host_One():
                           elif Mac_Get not  in line  : 
                              vendor = "Unknown-MAC"
                           count += 1
-   
                       print(D+W+I+"\n[*] HOST INFO-\n"+R+"="*14+"\n")
                       print(I+D+B+"[+] HOST-IP         --------------|- " +  host_ip )
-                      print("[+] Mac-Address     --------------|- " +  Mac_Interface)
+                      print("[+] Mac-Address     --------------|- " +  Mac_Interface)  
                       print("[+] Mac-Vendor      --------------|- " + vendor)
                       print(D+I+W+"\n[*] NETWORK INFO-\n"+R+"="*14+"\n")
                       print(I+D+B+"[+] Network-ID      --------------|- " +  str(Network_ID))
@@ -103,7 +103,7 @@ class Arp_Host_One():
                            if "/" in self.args.Host[-2:]:
                               print("[+] NetWork-Prefix  --------------|- " + str(self.args.Host[-1:]))
                            else:
-                              print("[+] NetWork-Prefix  --------------|- " + str(self.args.Host[-1:]))
+                              print("[+] NetWork-Prefix  --------------|- " + str(self.args.Host[-2:]))
                       print("[+] Subnet-Mask     --------------|- " +  str(SubNet))
                       print("[+] Start ip        --------------|- " +  str([ x for x in Network.hosts()][0]))
                       print("[+] Last ip         --------------|- " +  str([ x for  x  in  Network.hosts()][-1]))
@@ -125,13 +125,13 @@ class Arp_Host_One():
                    dcount = 0
                    Host = str(Host)
                    rawSocket = socket.socket(socket.PF_PACKET, socket.SOCK_RAW,socket.htons(0x0806))                     
-                   rawSocket.settimeout(.20)
+                   rawSocket.settimeout(.50)
                    rawSocket.bind((self.args.Interface,0x0806))
                    source_ip  = bytes(host_ip.encode('utf-8'))
                    dest_ip    = bytes(Host.encode('utf-8'))
                    print(" "+"-"*80) 
-                   print("|  "+f"{'   Host    ':<23}","| "+f"{'    Mac-Address    ':<23}"+"| ",f"{'   Mac-Vondor   ':<25}","|")
-                   print(" "+"-"*80)
+                   print("|  "+f"{'   Host    ':<23}","| "+f"{'    Mac-Address    ':<23}"+"| ",f"{'   Mac-Vendor   ':<25}","|")
+                   print(" "+"-"*80)        
                    if dest_ip == source_ip :
                         Hcount  +=1	    
                         print(R+"|  "+Y+f"{Host:<23}",R+"|   "+Y+f"{Mac_Interface:<21}"+R+"|  "+Y+f"{vendor[0:23]:<25}",R+"|")  
@@ -139,8 +139,8 @@ class Arp_Host_One():
                         print()
                         exit()
                         interfaceMac = Mac_Interface[0:8].replace(":","").upper()
-                   else:      
-                        source_mac = binascii.unhexlify(Mac_Interface.replace(":",''))
+                   else: 
+                        source_mac = binascii.unhexlify(Mac_Interface.replace(":",''))     
                         dest_mac   = b"\xff\xff\xff\xff\xff\xff"
                         protocol   = 0x0806
                         eth_hdr    = struct.pack("!6s6sH",dest_mac,source_mac,protocol)
@@ -166,11 +166,11 @@ class Arp_Host_One():
                             .replace("(",'').replace(")",'')    
                             unpack2 = bytes(struct.unpack('!4B',recv_replay[28:32]) )  
                             ip_int = int.from_bytes(unpack2, "big") 
-                            ipstr = socket.inet_ntoa(struct.pack('!L', ip_int))                                                                       
-                            MacGET= str("".join(Mac[0:8])).replace(":","").upper()
+                            ipstr = socket.inet_ntoa(struct.pack('!L', ip_int))                              
+                            MacGET= str("".join(Mac[0:8])).replace(":","").upper().strip()
                             Macdb = open('Package/mac-vendor.txt', 'r')
                             MacFile = Macdb.readlines()
-                            count = 0                     
+                            count = 0                        
                             for line in MacFile:
                                 line = line.strip()
                                 if MacGET in line : 
@@ -180,7 +180,7 @@ class Arp_Host_One():
                                      
                                      vendor1 = " Unknown-MAC" 
                                 count += 1   
-                                          
+                                         
                             if "02" in opcodestr and ipstr == Host :
                                     Hcount  +=1	
                                     print(R+"|  "+B+f"{Host:<23}",R+"|   "+P+f"{Mac:<21}"+R+"| "+W+f"{vendor1[0:23]:<25}"+R+"  |"+R)
@@ -188,8 +188,8 @@ class Arp_Host_One():
                                     print(Banner)
                                     exit()
                             else:
-
-                                 pass                                      
+                                 pass  
+                                       
                         except Exception:
                                 dcount +=1
                                 Mac = "00:00:00:00:00:00:00"
@@ -201,8 +201,8 @@ class Arp_Host_One():
                    print(I+D+R+"\n"+"="*50+W+D+I+"\n"+"[*]  for arp scan run as root\
                    or sudo privileges   "+R+D+"\n"+"="*50+"\n")                   
                    exit()
-               except Exception  :                       
-                      print(R+D+I+"\n"+"="*50+"\n"+W+I+D+"[*] HOST ("+self.args.Host+")   -------------| ValueError"+R+D+I+"\n"+"="*50+"\n")
+              # except Exception  :                       
+               #       print(R+D+I+"\n"+"="*50+"\n"+W+I+D+"[*] HOST ("+self.args.Host+")   -------------| ValueError"+R+D+I+"\n"+"="*50+"\n")
                except KeyboardInterrupt:
                      print(Banner)
                      if self.args.output :          
@@ -214,8 +214,9 @@ class Arp_Host_One():
         def args_command(self):
               parser = argparse.ArgumentParser( description="Usage: <OPtion> <arguments> ")          
               parser.add_argument( '-O',"--output"   ,metavar='' , action=None )
-              parser.add_argument( '-H',"--Host"   ,metavar='' , action=None  )
+              parser.add_argument( '-AH',"--Host"   ,metavar='' , action=None  )
               parser.add_argument( '-I',"--Interface"   ,metavar='' , action=None  )
+             
               self.args = parser.parse_args()
               if len(sys.argv)> 1 :
                    pass
