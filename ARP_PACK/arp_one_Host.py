@@ -94,7 +94,7 @@ class Arp_Host_One():
                       print(D+W+I+"\n[*] HOST INFO-\n"+R+"="*14+"\n")
                       print(I+D+B+"[+] HOST-IP         --------------|- " +  host_ip )
                       print("[+] Mac-Address     --------------|- " +  Mac_Interface)  
-                      print("[+] Mac-Vendor      --------------|- " + vendor)
+                      print("[+] Mac-Vendor      --------------|- " + vendor[0:23])
                       print(D+I+W+"\n[*] NETWORK INFO-\n"+R+"="*14+"\n")
                       print(I+D+B+"[+] Network-ID      --------------|- " +  str(Network_ID))
                       if "/" not in self.args.Host:
@@ -201,8 +201,8 @@ class Arp_Host_One():
                    print(I+D+R+"\n"+"="*50+W+D+I+"\n"+"[*]  for arp scan run as root\
                    or sudo privileges   "+R+D+"\n"+"="*50+"\n")                   
                    exit()
-              # except Exception  :                       
-               #       print(R+D+I+"\n"+"="*50+"\n"+W+I+D+"[*] HOST ("+self.args.Host+")   -------------| ValueError"+R+D+I+"\n"+"="*50+"\n")
+               except Exception  :                       
+                      print(R+D+I+"\n"+"="*50+"\n"+W+I+D+"[*] HOST ("+self.args.Host+")   -------------| ValueError"+R+D+I+"\n"+"="*50+"\n")
                except KeyboardInterrupt:
                      print(Banner)
                      if self.args.output :          

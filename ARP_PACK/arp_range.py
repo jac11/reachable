@@ -80,11 +80,13 @@ class Range_arp_host :
                    start = timeit.default_timer()
                    if int(self.args.start)  not in range(int(start_ip[3]),int(end_ip[3])) \
                    or int(self.args.end)  not in range(int(start_ip[3]),int(end_ip[3])) :
-                          print(start_ip[3])
-                          print(end_ip[3])
+                          print('[+] Start subnet  : ',start_ip[3])
+                          print('[+] end  subnet   : ',end_ip[3])
                           print(D+R+I+"[+] Range Error     --------------| Hosts Count out of range Network Subnet" )
                           exit()
                    elif int(self.args.start) >= int (self.args.end) : 
+                          print('[+] Start Host  : ',start_ip[3])
+                          print('[+] end   Host   : ',end_ip[3])
                           print("[+] Range Error     --------------|  Wrong arithmetic Operation " )
                           exit()    
                    elif int(self.args.start) < int(self.args.end) :
@@ -100,7 +102,7 @@ class Range_arp_host :
                           else: 
                              self.Mac_Interface1 = real_Mac_split[-3]
                       except Exception :
-                         print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set InterFace argmint"+R+"\n"+"="*50+"\n")
+                         print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set InterFace argument"+R+"\n"+"="*50+"\n")
                          exit()                
                    try:
                        NetworkID = ipaddress.ip_network('{}{}{}'.format(Network_ID,scop,self.args.arpnetwork[-2:]))
@@ -185,7 +187,7 @@ class Range_arp_host :
                                printF  += ("[+] Mac-Address     --------------|- " +  self.Mac_Interface1)+"\n"
                          else:
                                printF  += ("[+] Mac-Address     --------------|- " +  Mac_Interface)+"\n" 
-                         printF  += ("[+] Mac-Vendor      --------------|- " + vendor)+"\n"
+                         printF  += ("[+] Mac-Vendor      --------------|- " + vendor[0:23])+"\n"
                          printF  += ("\n[*] NETWIRK INFO-\n"+"="*17+"\n")+"\n"
                          printF  += ("[+] Network-ID      --------------|- " +  str(Network_ID))+"\n"
                          printF  += ("[+] NetWork-Prefix  --------------|- " +  self.args.arpnetwork[-2:])+"\n"

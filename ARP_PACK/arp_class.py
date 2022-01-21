@@ -55,7 +55,7 @@ class Arp_Network():
                   print(W+D+I+"\n[*] Mac-chanage-\n"+R+"="*14+"\n")
                   print(D+I+B+"[+] New Mac          --------------|- " + self.Mac_addr )  
               except Exception :
-                       print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set InterFace argmint"+R+"\n"+"="*50+"\n")
+                       print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set InterFace argument"+R+"\n"+"="*50+"\n")
                        exit()
            else:
                 print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set -M/--Mac true"+R+"\n"+"="*50+"\n")
@@ -78,7 +78,7 @@ class Arp_Network():
                           else: 
                              self.Mac_Interface1 = real_Mac_split[-3]
                       except Exception :
-                         print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set InterFace argmint"+R+"\n"+"="*50+"\n")
+                         print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set InterFace argument"+R+"\n"+"="*50+"\n")
                          exit()                
                try:
                   Network  = ipaddress.ip_network('{}{}{}'.format(Network_ID,scop,self.args.arpnetwork[-2:]))
@@ -137,7 +137,7 @@ class Arp_Network():
                       print("[+] Mac-Address     --------------|- " +  self.Mac_Interface1)
                    else:  
                        print("[+] Mac-Address     --------------|- " +  Mac_Interface)  
-                   print("[+] Mac-Vendor      --------------|- " + vendor)
+                   print("[+] Mac-Vendor      --------------|- " + vendor[0:23)
                    if self.args.Mac:
                       self.Change_mac()
                    print("[+] Mac-Vendor      --------------|- " + vendor)
@@ -153,8 +153,7 @@ class Arp_Network():
                    print("[+] Number of hosts --------------|- " +  str(Hosts_range ))
                    print("[+] Broadcast IP    --------------|- " +  str(Network.broadcast_address))
                    print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Host-discover-"+R+"\n"+"="*20+"\n")
-                   if self.args.output:
-                        
+                   if self.args.output:                        
                          printF  = ""
                          printF  += ("[+] "+ command_argv)+"\n"
                          printF  += ("\n[*] HOST INFO-\n"+"="*14+"\n")+"\n"
@@ -181,7 +180,7 @@ class Arp_Network():
                    Hcount = 0
                    dcount = 0
                    print(" "+"-"*80) 
-                   print("|  "+f"{'   Host    ':<23}","| "+f"{'    Mac-Address    ':<23}"+"| ",f"{'   Mac-Vondor   ':<25}","|")
+                   print("|  "+f"{'   Host    ':<23}","| "+f"{'    Mac-Address    ':<23}"+"| ",f"{'   Mac-Vendor   ':<25}","|")
                    print(" "+"-"*80)
                    
                    for Host in Network .hosts():
@@ -302,6 +301,13 @@ class Arp_Network():
                             out_put.write(Banner1+'\n'+printF+Banner1)   
                             id_user =  os.stat("./reachable.py").st_uid 
                             os.chown("./Scan-Store/"+self.args.output, id_user, id_user)
+                       if self.args.Mac:              
+                          ifconfig_down = "sudo ifconfig "+self.args.Interface+" down"
+                          ifconfig_mac_change = "sudo ifconfig "+self.args.Interface+ " hw ether "+self.Mac_Interface1
+                          ifconfig_up = "sudo ifconfig "+self.args.Interface+" up"
+                          os.system(ifconfig_down)
+                          config  = os.system(ifconfig_mac_change)
+                          os.system(ifconfig_up)  
                 
     def args_command(self):
             parser = argparse.ArgumentParser( description="Usage: <OPtion> <arguments> ")
