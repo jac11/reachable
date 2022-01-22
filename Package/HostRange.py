@@ -292,7 +292,7 @@ class RangeOfHosts :
                     
                    print(Banner) 
                    if self.args.output:
-                        printF   = ""
+
                         printF  += ("\n[*] Scan-Result-\n"+"="*17+"\n")+"\n"
                         printF  += ("[+] Total-Hosts     --------------|- " +  str(total ))+"\n"
                         printF  += ("[+] Active Hosts    --------------|- " +  str(Hcount))+"\n"  
@@ -302,11 +302,11 @@ class RangeOfHosts :
                         else:
                              printF  += ("[+] Inactive Hosts  --------------|- " +  str(dcount))+"\n"
                              printF  += ("[+] Run-Time        --------------|- " +  str(result))+"\n"
-                             
+                   if self.args.output:            
                         with open("./Scan-Store/"+self.args.output,"w+") as out_put:
                              out_put.write(Banner1+'\n'+printF+"\n"+Banner1) 
                              if self.args.Mac : 
-                              with open("./Scan-Store/"+self.args.output,'w') as out_put :
+
                                  out_put.write(Banner1+'\n\n'+printF+Banner1)
                                  id_user =  os.stat("./reachable.py").st_uid 
                                  os.chown("./Scan-Store/"+self.args.output, id_user, id_user)

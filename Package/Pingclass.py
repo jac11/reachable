@@ -271,7 +271,6 @@ class Discover_Network():
                    print(Banner)        
                               
                    if self.args.output:
-                      printF = ""
                       printF += ("\n[*] SCAN RSULET-\n"+"="*14+"\n")+"\n"
                       printF += ("[+] Total Hosts       --------------|- " +  str(Hosts_range))+"\n"
                       printF += ("[+] Active Hosts      --------------|- " +  str(Hcount))+"\n"
@@ -290,13 +289,18 @@ class Discover_Network():
                 print(R+"\n"+"="*50+"\n"+W+D+I+"[*] HOST (",self.args.Pnetwork,")   -------------| ValueError"+R+"\n"+"="*50+"\n")
            except KeyboardInterrupt:
                print(Banner)
-               if self.args.Mac:              
-                      ifconfig_down = "sudo ifconfig "+self.args.Interface+" down"
-                      ifconfig_mac_change = "sudo ifconfig "+self.args.Interface+ " hw ether "+self.Mac_Interface1
-                      ifconfig_up = "sudo ifconfig "+self.args.Interface+" up"
-                      os.system(ifconfig_down)
-                      config  = os.system(ifconfig_mac_change)
-                      os.system(ifconfig_up)              
+               if self.args.output :          
+                        with open("./Scan-Store/"+self.args.output,'w') as out_put :
+                             out_put.write(Banner1+'\n'+printF+Banner1)   
+                             id_user =  os.stat("./reachable.py").st_uid 
+                             os.chown("./Scan-Store/"+self.args.output, id_user, id_user)
+                        if self.args.Mac:              
+                           ifconfig_down = "sudo ifconfig "+self.args.Interface+" down"
+                           ifconfig_mac_change = "sudo ifconfig "+self.args.Interface+ " hw ether "+self.Mac_Interface1
+                           ifconfig_up = "sudo ifconfig "+self.args.Interface+" up"
+                           os.system(ifconfig_down)
+                           config  = os.system(ifconfig_mac_change)
+                           os.system(ifconfig_up)              
     def args_command(self):
             parser = argparse.ArgumentParser( description="Usage: <OPtion> <arguments> ")
             parser.add_argument( '-PN',"--Pnetwork"   ,metavar='' , action=None  )
