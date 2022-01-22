@@ -28,7 +28,8 @@ class Discover_Network():
           
     def __init__(self):
           self.args_command()
-          self.Ping_command()   
+          self.Ping_command() 
+            
     def Change_mac(self):
            if self.args.Mac and 'true' in sys.argv:
               try:
@@ -52,10 +53,10 @@ class Discover_Network():
                   os.system(ifconfig_down)
                   config  = os.system(ifconfig_mac_change)
                   os.system(ifconfig_up)   
-                  print(W+D+I+"\n[*] Mac-chanage-\n"+R+"="*14+"\n")
+                  time.sleep(20)
                   print(D+I+B+"[+] New Mac          --------------|- " + self.Mac_addr )  
               except Exception :
-                       print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set InterFace argmint"+R+"\n"+"="*50+"\n")
+                       print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set InterFace argument"+R+"\n"+"="*50+"\n")
                        exit()
            else:
                 print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set -M/--Mac true"+R+"\n"+"="*50+"\n")
@@ -77,7 +78,6 @@ class Discover_Network():
                if self.args.Mac:  
                   try:
                      linker  = "ip link show "+self.args.Interface
-                     #linker  = "ip link show wlx00c0ca76776b"
                      link_Mac= subprocess.check_output (linker,shell=True).decode('utf-8')  
                      real_Mac_split = link_Mac.split() 
                      if "permaddr" in  real_Mac_split:
@@ -85,13 +85,12 @@ class Discover_Network():
                      else: 
                          self.Mac_Interface1 = real_Mac_split[-3]
                   except Exception :
-                       print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set InterFace argmint"+R+"\n"+"="*50+"\n")
+                       print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set InterFace argument"+R+"\n"+"="*50+"\n")
                        exit()                
                else:  
                    Mac_Interface = ':'.join(re.findall('..', '%012x' % uuid.getnode()))        
                    Mac_Get = Mac_Interface[0:8].replace(":","").upper()  
-                   Mac_Interface = ':'.join(re.findall('..', '%012x' % uuid.getnode())) 
-               
+                 
                Macdb = open('Package/mac-vendor.txt', 'r')
                Mac = Macdb.readlines()               
                try:
@@ -103,14 +102,15 @@ class Discover_Network():
                       host_ip = host_ip.split()
                       host_ip_0 = str(host_ip[0])
             
-                      if  ipaddress.ip_address(host_ip_0) in ipaddress.ip_network(Network1):              
-                          host_ip = host_ip_0
-                          command  = "ifconfig | grep 'ether'"
-                          Macdb = subprocess.check_output (command,shell=True).decode('utf-8')
-                          Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
-                          FMac = re.findall(Macaddr ,Macdb)
-                          Mac_Interface = str("".join(FMac[0]))
-                          Mac_Get = Mac_Interface[0:8].replace(":","").upper()
+                      if  ipaddress.ip_address(host_ip_0) in ipaddress.ip_network(Network1) :             
+                           host_ip = host_ip_0
+                           command  = "ifconfig | grep 'ether'"
+                           Macdb = subprocess.check_output (command,shell=True).decode('utf-8')
+                           Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
+                           FMac = re.findall(Macaddr ,Macdb)
+                           Mac_Interface = str("".join(FMac[0]))
+                           Mac_Get = Mac_Interface[0:8].replace(":","").upper()
+                                            
                       else:                         
                           host_ip = str(host_ip[-1])
                           command  = "ifconfig | grep 'ether'"
@@ -119,10 +119,11 @@ class Discover_Network():
                           FMac = re.findall(Macaddr ,Macdb)
                           Mac_Interface = str("".join(FMac[-1]))
                       if  self.args.Mac:
-                          Mac_Get = Mac_Interface1[0:8].replace(":","").upper()
+                          Mac_Get = self.Mac_Interface1[0:8].replace(":","").upper()
                       else:   
                           Mac_Get = Mac_Interface[0:8].replace(":","").upper()
                except Exception :
+               
                       if "/" in sys.argv[2]:
                          host_ip = sys.argv[2][:-3]
                       else:
@@ -148,7 +149,9 @@ class Discover_Network():
                        print("[+] Mac-Address     --------------|- " +  Mac_Interface)  
                    print("[+] Mac-Vendor      --------------|- " + vendor)
                    if self.args.Mac:
-                      self.Change_mac()
+                       print(W+D+I+"\n[*] Mac-chanage-\n"+R+"="*14+"\n")
+                       print("[+] Wating           --------------|- We set the Interface " )
+                       self.Change_mac()
                    print(W+I+D+"\n[*] NETWORK INFO-\n"+R+"="*14+"\n")
                    print(B+I+D+"[+] Network-ID      --------------|- " +  str(Network_ID))
                    if "/" in self.args.Pnetwork[-2:] :
@@ -170,7 +173,7 @@ class Discover_Network():
                                printF  += ("[+] Mac-Address     --------------|- " +  self.Mac_Interface1)+"\n"
                          else:
                                printF  += ("[+] Mac-Address     --------------|- " +  Mac_Interface)+"\n"      
-                         printF  += ("[+] Mac-Vendor      --------------|- " + vendor)+"\n"
+                         printF  += ("[+] Mac-Vendor      --------------|- " + vendor[0:23])+"\n"
                          printF  += ("\n[*] NETWIRK INFO-\n"+"="*14+"\n")+"\n"
                          printF  += ("[+] Network-ID      --------------|- " +  str(Network_ID))+"\n"
                          if "/"in self.args.Pnetwork[-2:]:
@@ -184,11 +187,11 @@ class Discover_Network():
                          printF  += ("[+] Broadcast IP    --------------|- " +  str(Network.broadcast_address))+"\n"
                          printF  += ("\n"+"="*50+"\n"+"[*] Host-discover-"+"\n"+"="*20+"\n\n")
                          printF += str(" "+"-"*80)+"\n" 
-                         printF += str("|  "+f"{'   Host    ':<23}"+"| "+f"{'    Mac-Address    ':<23}"+"| "+f"{'   Mac-Vondor   ':<28}"+"|")+'\n'
+                         printF += str("|  "+f"{'   Host    ':<23}"+"| "+f"{'    Mac-Address    ':<23}"+"| "+f"{'   Mac-Vendor   ':<28}"+"|")+'\n'
                          printF += str(" "+"-"*80)+'\n'             
                          
                    print(" "+"-"*80) 
-                   print("|  "+f"{'   Host    ':<23}","| "+f"{'    Mac-Address    ':<23}"+"| ",f"{'   Mac-Vondor   ':<25}","|")
+                   print("|  "+f"{'   Host    ':<23}","| "+f"{'    Mac-Address    ':<23}"+"| ",f"{'   Mac-Vendor   ':<25}","|")
                    print(" "+"-"*80)                                    
                    Hcount = 0
                    dcount = 0
@@ -220,17 +223,24 @@ class Discover_Network():
                                count += 1  
                                
                            if Host == host_ip and \
-                           "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) ==  str(ipaddress.ip_address(host_ip)) :
+                           "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) ==  str(ipaddress.ip_address(host_ip))\
+                           and not self.args.Mac :
                                 print(R+"|  "+Y+f"{Host:<23}",R+"|   "+Y+f"{Mac_Interface:<21}"+R+"|  "+Y+f"{vendor[0:23]:<25}",R+"|") 
                                 Hcount  +=1 
                                 if self.args.output : 
                                     printF +="|  "+f"{Host:<23}"+"|   "+f"{Mac_Interface:<21}"+"|  "+f"{vendor[0:23]:<27}"+"|"+'\n'                                                                  
-                           elif "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) != str(ipaddress.ip_address(host_ip)) :                     
+                           elif "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) != str(ipaddress.ip_address(host_ip))\
+                           and not self.args.Mac :                     
                                 print(R+"|  "+Y+f"{Host:<23}",R+"|"+P+f"{'   ------None-----    ':<23}"+R+" | "+B+f"{'  ------None----- ':<25}",R+" |")
                                 Hcount  +=1
                                 if self.args.output : 
-                                   printF +=("|  "+f"{Host:<23}"+"|"+f"{'   ------None-----    ':<23}"+" | "+f"{'  ------None----- ':<26}"+"  |")+'\n'                                  
-                           else: 
+                                   printF +=("|  "+f"{Host:<23}"+"|"+f"{'   ------None-----    ':<23}"+" | "+f"{'  ------None----- ':<26}"+"  |")+'\n'  
+                           elif self.args.Mac and  Host  != host_ip and  "no match found" in Mac_arp :
+                                  print(R+"|  "+Y+f"{host_ip:<23}",R+"|   "+Y+f"{Mac_Interface:<21}"+R+"|  "+Y+f"{vendor[0:23]:<25}",R+"|") 
+                                  Hcount  +=1 
+                                  if self.args.output : 
+                                     printF +="|  "+f"{Host:<23}"+"|   "+f"{Mac_Interface:<21}"+"|  "+f"{vendor[0:23]:<27}"+"|"+'\n'                                       
+                           else:  
                                 Hcount  +=1	                                                                             
                                 print(R+"|  "+B+f"{Host:<23}",R+"|   "+P+f"{Mac:<21}"+R+"| "+W+f"{vendor1[0:23]:<25}"+R+"  |"+R)
                                 if self.args.output :
@@ -266,20 +276,27 @@ class Discover_Network():
                       printF += ("[+] Total Hosts       --------------|- " +  str(Hosts_range))+"\n"
                       printF += ("[+] Active Hosts      --------------|- " +  str(Hcount))+"\n"
                       printF += ("[+] Inactive Hosts    --------------|- " +  str(dcount))+"\n"
-                      printF += ("[+] Run-Time          --------------|- " +  str(result))+"\n"
-                     
-                   if self.args.output :          
-                       with open("./Scan-Store/"+self.args.output,"w+") as out_put:
-                          out_put.write(Banner1+'\n'+printF+"\n"+Banner1)      
-          # except Exception:
-           #     print(R+"\n"+"="*50+"\n"+W+D+I+"[*] HOST (",self.args.Pnetwork,")   -------------| ValueError"+R+"\n"+"="*50+"\n")
+                      printF += ("[+] Run-Time          --------------|- " +  str(result))+"\n" 
+                        
+                      with open("./Scan-Store/"+self.args.output,"w+") as out_put:
+                          out_put.write(Banner1+'\n'+printF+"\n"+Banner1) 
+                      if self.args.Mac : 
+                         with open("./Scan-Store/"+self.args.output,'w') as out_put :
+                              out_put.write(Banner1+'\n\n'+printF+Banner1)
+                              id_user =  os.stat("./reachable.py").st_uid 
+                              os.chown("./Scan-Store/"+self.args.output, id_user, id_user)
+                              exit()            
+           except Exception:
+                print(R+"\n"+"="*50+"\n"+W+D+I+"[*] HOST (",self.args.Pnetwork,")   -------------| ValueError"+R+"\n"+"="*50+"\n")
            except KeyboardInterrupt:
                print(Banner)
-               if self.args.output:
-                      with open("./Scan-Store/"+self.args.output,"w+") as out_put:
-                          out_put.write(Banner1+'\n'+printF+"\n"+Banner1)  
-               exit() 
-   
+               if self.args.Mac:              
+                      ifconfig_down = "sudo ifconfig "+self.args.Interface+" down"
+                      ifconfig_mac_change = "sudo ifconfig "+self.args.Interface+ " hw ether "+self.Mac_Interface1
+                      ifconfig_up = "sudo ifconfig "+self.args.Interface+" up"
+                      os.system(ifconfig_down)
+                      config  = os.system(ifconfig_mac_change)
+                      os.system(ifconfig_up)              
     def args_command(self):
             parser = argparse.ArgumentParser( description="Usage: <OPtion> <arguments> ")
             parser.add_argument( '-PN',"--Pnetwork"   ,metavar='' , action=None  )

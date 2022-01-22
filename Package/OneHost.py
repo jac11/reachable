@@ -42,34 +42,7 @@ class Host_One():
         def __init__(self):
            self.args_command()
            self.Ping_command() 
-        def Change_mac(self):
-           if self.args.Mac  and 'true' in sys.argv:
-              try:
-                  Mac_list =  ['FC:0F:E6:','00:12:EE:','00:1E:DC:','78:84:3C:',
-                               '00:26:B9:','14:FE:B5:','BC:30:5B:','D0:67:E5:',
-                               '10:1D:C0:','78:25:AD:','A0:0B:BA:','E8:11:32:',
-                               'F8:1E:DF:','E0:F8:47:','A4:B1:97:','7C:6D:62:',
-                              ] 
-                  Mac_list= random.choice(Mac_list)                  
-                  Mac_Cook  ="".join( f'{random.randrange(16**8):x}')
-                  Mac_Host = ':'.join(Mac_Cook[i:i+2] for i in range(0,6,2)).upper()
-                  self.Mac_addr =  Mac_list + Mac_Host  
-                  command  = "ifconfig  "+self.args.Interface + " | grep ether"
-                  Current_Mac_P = subprocess.check_output (command,shell=True).decode('utf-8')
-                  Current_Mac_C = re.compile(r'(?:[0-9a-fA-F]:?){12}')
-                  Current_Mac_F = re.findall(Current_Mac_C , Current_Mac_P)
-                  self.Current_Mac_G = str("".join(Current_Mac_F[0]))
-                  ifconfig_down = "sudo ifconfig "+self.args.Interface+" down"
-                  ifconfig_mac_change = "sudo ifconfig "+self.args.Interface+ " hw ether "+self.Mac_addr
-                  ifconfig_up = "sudo ifconfig "+self.args.Interface+" up"
-                  os.system(ifconfig_down)
-                  config  = os.system(ifconfig_mac_change)
-                  os.system(ifconfig_up)   
-                  print(W+D+I+"\n[*] Mac-chanage-\n"+R+"="*14+"\n")
-                  print(D+I+B+"[+] New Mac          --------------|- " + self.Mac_addr )  
-              except Exception :
-                       print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set InterFace argmint"+R+"\n"+"="*50+"\n")
-                       exit()                                                                 
+           
         def Ping_command(self):
             
                try:
@@ -106,18 +79,7 @@ class Host_One():
                                   FMac = re.findall(Macaddr ,Macdb)
                                   Mac_Interface = str("".join(FMac[-1]))
                                   Mac_Get = Mac_Interface[0:8].replace(":","").upper()
-                          if self.args.Mac:  
-                             try:
-                                linker  = "ip link show "+self.args.Interface
-                                link_Mac= subprocess.check_output (linker,shell=True).decode('utf-8')  
-                                real_Mac_split = link_Mac.split() 
-                                if "permaddr" in  real_Mac_split:
-                                    self.Mac_Interface1 = real_Mac_split[-1] 
-                                else: 
-                                    self.Mac_Interface1 = real_Mac_split[-3]
-                             except Exception :
-                                   print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set InterFace argmint"+R+"\n"+"="*50+"\n")
-                                   exit()                           
+                                          
                       except Exception :
                           if "/" in sys.argv[2]:
                               host_ip = sys.argv[2][:-3]
@@ -134,13 +96,8 @@ class Host_One():
                          count += 1
                       print(W+D+I+"\n[*] HOST INFO-\n"+R+"="*14+"\n")
                       print(B+D+I+"[+] HOST-IP         --------------|- " +  host_ip )
-                      if self.args.Mac :
-                          print("[+] Mac-Address     --------------|- " +  self.Mac_Interface1)
-                      else:  
-                          print("[+] Mac-Address     --------------|- " +  Mac_Interface)
-                      print("[+] Mac-Vendor      --------------|- " + vendor)
-                      if self.args.Mac:
-                         self.Change_mac()
+                      print("[+] Mac-Address     --------------|- " +  Mac_Interface)
+                      print("[+] Mac-Vendor      --------------|- " + vendor[0:23])
                       print(W+I+D+"\n[*] NETWORK INFO-\n"+R+"="*14+"\n")
                       print(B+D+I+"[+] Network-ID      --------------|- " +  str(Network_ID))
                       if "/" not in self.args.phost:
@@ -163,11 +120,8 @@ class Host_One():
                       if self.args.output:
                            printF  = ""
                            printF  += ("\n[*] HOST INFO-\n"+"="*14+"\n")+"\n"
-                           printF  += ("[+] HOST-IP         --------------|- " +  host_ip)+"\n"
-                           if self.args.Mac :
-                               printF  += ("[+] Mac-Address     --------------|- " +  self.Mac_Interface1)+"\n"
-                           else:
-                               printF  += ("[+] Mac-Address     --------------|- " +  Mac_Interface)+"\n" 
+                           printF  += ("[+] HOST-IP         --------------|- " +  host_ip)+"\n"                         
+                           printF  += ("[+] Mac-Address     --------------|- " +  Mac_Interface)+"\n" 
                            printF  += ("[+] Mac-Vendor      --------------|- " + vendor)+"\n"
                            printF  += ("\n[*] NETWIRK INFO-\n"+"="*14+"\n")+"\n"
                            printF  += ("[+] Network-ID      --------------|- " +  str(Network_ID))+"\n"
@@ -185,12 +139,12 @@ class Host_One():
                            printF  += ("[+] Broadcast IP    --------------|- " +  str(Network.broadcast_address))+"\n"
                            printF  += ("\n"+"="*50+"\n"+"[*] Host-discover-"+"\n"+"="*20+"\n\n")
                            printF += str(" "+"-"*80)+"\n" 
-                           printF += str("|  "+f"{'   Host    ':<23}"+"| "+f"{'    Mac-Address    ':<23}"+"| "+f"{'   Mac-Vondor   ':<28}"+"|")+'\n'
+                           printF += str("|  "+f"{'   Host    ':<23}"+"| "+f"{'    Mac-Address    ':<23}"+"| "+f"{'   Mac-Vendor   ':<28}"+"|")+'\n'
                            printF += str(" "+"-"*80)+'\n'             
                            with open(self.args.output,"w+") as out_put:
                                 out_put.write(Banner+"\n"+printF)
                    print(" "+"-"*80) 
-                   print("|  "+f"{'   Host    ':<23}","| "+f"{'    Mac-Address    ':<23}"+"| ",f"{'   Mac-Vondor   ':<25}","|")
+                   print("|  "+f"{'   Host    ':<23}","| "+f"{'    Mac-Address    ':<23}"+"| ",f"{'   Mac-Vendor   ':<25}","|")
                    print(" "+"-"*80)   
                               
                    if "/"in self.args.phost:
@@ -240,13 +194,6 @@ class Host_One():
                            host_split = Host.split(".")                              
                            print(R+"|  "+Y+f"{Host:<23}",R+"|"+P+f"{'   00:00:00:00:00:00   ':<21}"+R+" | "+B+f"{'   HOST DONW          ':<26}",R+"|")
                    print(Banner) 
-                   if self.args.Mac:              
-                      ifconfig_down = "sudo ifconfig "+self.args.Interface+" down"
-                      ifconfig_mac_change = "sudo ifconfig "+self.args.Interface+ " hw ether "+self.Mac_Interface1
-                      ifconfig_up = "sudo ifconfig "+self.args.Interface+" up"
-                      os.system(ifconfig_down)
-                      config  = os.system(ifconfig_mac_change)
-                      os.system(ifconfig_up)         
                    if self.args.output :          
                        with open("./Scan-Store/"+self.args.output,"w+") as out_put:
                           out_put.write(Banner1+'\n'+printF+"\n"+Banner1) 
@@ -261,8 +208,7 @@ class Host_One():
               parser = argparse.ArgumentParser( description="Usage: <OPtion> <arguments> ")          
               parser.add_argument( '-O',"--output"   ,metavar='' , action=None )
               parser.add_argument( '-PH',"--phost"   ,metavar='' , action=None  )
-              parser.add_argument( '-I',"--Interface"   ,metavar='' , action=None  )
-              parser.add_argument( '-M',"--Mac"   ,metavar='' , action=None  )
+
               self.args = parser.parse_args()
               if len(sys.argv)> 1 :
                    pass

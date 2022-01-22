@@ -51,10 +51,10 @@ class RangeOfHosts :
                   os.system(ifconfig_down)
                   config  = os.system(ifconfig_mac_change)
                   os.system(ifconfig_up)   
-                  print(W+D+I+"\n[*] Mac-chanage-\n"+R+"="*14+"\n")
+                  time.sleep(20)
                   print(D+I+B+"[+] New Mac          --------------|- " + self.Mac_addr )  
               except Exception :
-                       print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set InterFace argmint"+R+"\n"+"="*50+"\n")
+                       print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set InterFace argument"+R+"\n"+"="*50+"\n")
                        exit()                                       
       def Ping_Range(self):
             
@@ -79,12 +79,14 @@ class RangeOfHosts :
                    start_ip = str(Network_ID).split(".") 
                    if int(self.args.start)  not in range(int(start_ip[3]),int(end_ip[3])) \
                    or int(self.args.end)  not in range(int(start_ip[3]),int(end_ip[3])) :
-                          print(start_ip[3])
-                          print(end_ip[3])
+                          print('[+] Start subnet  : ',start_ip[3])
+                          print('[+] end  subnet   : ',end_ip[3])
                           print(D+R+I+"[+] Range Error     --------------| Hosts Count out of range Network Subnet" )
                           exit()
                    elif int(self.args.start) >= int (self.args.end) : 
-                          print("[+] Range Error     --------------|  Wrong arithmetic Operation " )
+                          print('[+] Start Host   : ',start_ip[3])
+                          print('[+] end   Host   : ',end_ip[3])
+                          print(R+"[+] Range Error     --------------|  Wrong arithmetic Operation " )
                           exit()    
                    elif int(self.args.start) < int(self.args.end) :
                         total = int(self.args.end) - int(self.args.start)     
@@ -98,7 +100,7 @@ class RangeOfHosts :
                            else: 
                              self.Mac_Interface1 = real_Mac_split[-3]
                        except Exception :
-                           print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set InterFace argmint"+R+"\n"+"="*50+"\n")
+                           print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set InterFace argument"+R+"\n"+"="*50+"\n")
                            exit()                      
                    command_argv = str(" ".join(sys.argv))
                    start = timeit.default_timer()
@@ -152,9 +154,11 @@ class RangeOfHosts :
                       print("[+] Mac-Address     --------------|- " +  self.Mac_Interface1)
                    else:  
                        print("[+] Mac-Address     --------------|- " +  Mac_Interface)  
-                   print("[+] Mac-Vendor      --------------|- " + vendor)
+                   print("[+] Mac-Vendor      --------------|- " + vendor[0:23])
                    if self.args.Mac:
-                      self.Change_mac()
+                       print(W+D+I+"\n[*] Mac-chanage-\n"+R+"="*14+"\n")
+                       print("[+] Wating           --------------|- We set the Interface " )
+                       self.Change_mac()
                    print(W+D+I+"\n[*] NETWORK INFO-\n"+R+"="*17+"\n")
                    print(B+D+I+"[+] Network-ID      --------------|- " +  str(Network_ID))
                    if "/" in self.args.Pnetwork[-2:] :
@@ -195,14 +199,14 @@ class RangeOfHosts :
                          printF  += ("\n"+"="*50+"\n"+"[*] Host-discover-"+"\n"+"="*20+"\n\n")
                          printF  += ("\n"+"="*50+"\n"+"[*] Host-discover-"+"\n"+"="*20+"\n\n")
                          printF += str(" "+"-"*80)+"\n" 
-                         printF += str("|  "+f"{'   Host    ':<23}"+"| "+f"{'    Mac-Address    ':<23}"+"| "+f"{'   Mac-Vondor   ':<28}"+"|")+'\n'
+                         printF += str("|  "+f"{'   Host    ':<23}"+"| "+f"{'    Mac-Address    ':<23}"+"| "+f"{'   Mac-Vendor   ':<28}"+"|")+'\n'
                          printF += str(" "+"-"*80)+'\n'             
                          
                    Hcount = 0
                    dcount = 0
                    
                    print(" "+"-"*80) 
-                   print("|  "+f"{'   Host    ':<23}","| "+f"{'    Mac-Address    ':<23}"+"| ",f"{'   Mac-Vondor   ':<25}","|")
+                   print("|  "+f"{'   Host    ':<23}","| "+f"{'    Mac-Address    ':<23}"+"| ",f"{'   Mac-Vendor   ':<25}","|")
                    print(" "+"-"*80)
                           
                    for Host_Num in range(int(self.args.start),int(self.args.end)+1) :                      
@@ -235,21 +239,28 @@ class RangeOfHosts :
                                count += 1  
                             
                             if Host == host_ip and \
-                           "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) ==  str(ipaddress.ip_address(host_ip)) :
+                            "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) ==  str(ipaddress.ip_address(host_ip))\
+                            and not self.args.Mac :
                                 print(R+"|  "+Y+f"{Host:<23}",R+"|   "+Y+f"{Mac_Interface:<21}"+R+"|  "+Y+f"{vendor[0:23]:<25}",R+"|") 
                                 Hcount  +=1 
                                 if self.args.output : 
                                     printF +="|  "+f"{Host:<23}"+"|   "+f"{Mac_Interface:<21}"+"|  "+f"{vendor[0:23]:<27}"+"|"+'\n'                                                                  
-                            elif "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) != str(ipaddress.ip_address(host_ip)) :                     
+                            elif "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) != str(ipaddress.ip_address(host_ip))\
+                            and not self.args.Mac :                     
                                 print(R+"|  "+Y+f"{Host:<23}",R+"|"+P+f"{'   ------None-----    ':<23}"+R+" | "+B+f"{'  ------None----- ':<25}",R+" |")
                                 Hcount  +=1
                                 if self.args.output : 
-                                   printF +=("|  "+f"{Host:<23}"+"|"+f"{'   ------None-----    ':<23}"+" | "+f"{'  ------None----- ':<26}"+"  |")+'\n'                                  
-                            else: 
+                                   printF +=("|  "+f"{Host:<23}"+"|"+f"{'   ------None-----    ':<23}"+" | "+f"{'  ------None----- ':<26}"+"  |")+'\n'  
+                            elif self.args.Mac and  Host  != host_ip and  "no match found" in Mac_arp :
+                                  print(R+"|  "+Y+f"{host_ip:<23}",R+"|   "+Y+f"{Mac_Interface:<21}"+R+"|  "+Y+f"{vendor[0:23]:<25}",R+"|") 
+                                  Hcount  +=1 
+                                  if self.args.output : 
+                                     printF +="|  "+f"{Host:<23}"+"|   "+f"{Mac_Interface:<21}"+"|  "+f"{vendor[0:23]:<27}"+"|"+'\n'                                       
+                            else:  
                                 Hcount  +=1	                                                                             
                                 print(R+"|  "+B+f"{Host:<23}",R+"|   "+P+f"{Mac:<21}"+R+"| "+W+f"{vendor1[0:23]:<25}"+R+"  |"+R)
                                 if self.args.output :
-                                     printF +=str("|  "+f"{Host:<23}"+"|   "+f"{Mac:<21}"+"| "+f"{vendor1[0:23]:<26}"+"  |")+'\n'
+                                     printF +=str("|  "+f"{Host:<23}"+"|   "+f"{Mac:<21}"+"| "+f"{vendor1[0:23]:<26}"+"  |")+'\n'        
                         else:
                            dcount +=1 
                            host_split = Host.split(".")                              
@@ -292,15 +303,30 @@ class RangeOfHosts :
                              printF  += ("[+] Inactive Hosts  --------------|- " +  str(dcount))+"\n"
                              printF  += ("[+] Run-Time        --------------|- " +  str(result))+"\n"
                              
-                        with open("./Scan-Store/"+self.args.output,"w+") as out_put :
-                             out_put.write(Banner1+'\n'+printF+"\n"+Banner1)        
-            # except Exception:
-             #     print(R+"\n"+"="*50+"\n"+W+I+D+"[*] HOST (",self.args.Pnetwork,")   -------------| ValueError"+R+"\n"+"="*50+"\n")
+                        with open("./Scan-Store/"+self.args.output,"w+") as out_put:
+                             out_put.write(Banner1+'\n'+printF+"\n"+Banner1) 
+                             if self.args.Mac : 
+                              with open("./Scan-Store/"+self.args.output,'w') as out_put :
+                                 out_put.write(Banner1+'\n\n'+printF+Banner1)
+                                 id_user =  os.stat("./reachable.py").st_uid 
+                                 os.chown("./Scan-Store/"+self.args.output, id_user, id_user)
+                                 exit()            
+             except Exception:
+                     print(R+"\n"+"="*50+"\n"+W+D+I+"[*] HOST (",self.args.Pnetwork,")   -------------| ValueError"+R+"\n"+"="*50+"\n")
              except KeyboardInterrupt:
-                  print(Banner)
-                  if self.args.output:
-                     with open("./Scan-Store/"+self.args.output,"w+") as out_put:
-                           out_put.write(Banner1+'\n'+printF+"\n"+Banner1) 
+                     print(Banner)
+                     if self.args.output :          
+                        with open("./Scan-Store/"+self.args.output,'w') as out_put :
+                             out_put.write(Banner1+'\n'+printF+Banner1)   
+                             id_user =  os.stat("./reachable.py").st_uid 
+                             os.chown("./Scan-Store/"+self.args.output, id_user, id_user)
+                        if self.args.Mac:              
+                           ifconfig_down = "sudo ifconfig "+self.args.Interface+" down"
+                           ifconfig_mac_change = "sudo ifconfig "+self.args.Interface+ " hw ether "+self.Mac_Interface1
+                           ifconfig_up = "sudo ifconfig "+self.args.Interface+" up"
+                           os.system(ifconfig_down)
+                           config  = os.system(ifconfig_mac_change)
+                           os.system(ifconfig_up)              
       def args_command(self):
               parser = argparse.ArgumentParser( description="Usage: <OPtion> <arguments> ")
               parser.add_argument( '-PN',"--Pnetwork"   ,metavar='' , action=None ) 
