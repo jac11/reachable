@@ -324,6 +324,13 @@ class Range_arp_host :
                             out_put.write(Banner1+'\n'+printF+Banner1)   
                             id_user =  os.stat("./reachable.py").st_uid 
                             os.chown("./Scan-Store/"+self.args.output, id_user, id_user)
+                       if self.args.Mac:
+                          ifconfig_down = "sudo ifconfig "+self.args.Interface+" down"
+                          ifconfig_mac_change = "sudo ifconfig "+self.args.Interface+ " hw ether "+self.Mac_addr
+                          ifconfig_up = "sudo ifconfig "+self.args.Interface+" up"
+                          os.system(ifconfig_down)
+                          config  = os.system(ifconfig_mac_change)
+                          os.system(ifconfig_up)       
       def args_command(self):
               parser = argparse.ArgumentParser( description="Usage: <OPtion> <arguments> ")
               parser.add_argument( '-AN',"--arpnetwork"    ) 
