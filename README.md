@@ -178,6 +178,6 @@ for Host in Network .hosts():
   sudo ./reachable.py -AN 10.195.100.200/24  -I eth0 -M true -S 200 -E 254 -O report.txt
 ```
 ## connect :
-- administartor@jacstory.toch
+- rootx1982@gmail.com
 -  thank you 
  
