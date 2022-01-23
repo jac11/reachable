@@ -77,9 +77,9 @@ class Run :
               parser.add_argument( '-PH',"--phost"        ,metavar='' , action=None  ,help ="Ping One Host Only ")
               parser.add_argument( '-AH',"--ahost"        ,metavar='' , action=None  ,help ="arp  One Host Only ")
               parser.add_argument( '-E',"--end"           ,metavar='' , action=None  ,help ="end of the range ips ")
-              parser.add_argument( '-M',"--Mac"           ,metavar='' , action=None  ,help ="Change host mac addreess befor Scan  ")
+              parser.add_argument( '-M',"--Mac"           ,metavar='' , action=None  ,help ="Change host mac addreess before Scan  ")
               parser.add_argument( '-I',"--Interface"     ,metavar='' , action=None  ,help =" User Interface  ")
-              parser.add_argument( '-i',"--info"          ,metavar='' , action=None  ,help =" print More info   ")
+              parser.add_argument( '-i',"--info"          ,metavar='' , action=None  ,help =" print More info -i info or --info info  ")
               self.args = parser.parse_args()
               if len(sys.argv)> 1 :
                    pass
