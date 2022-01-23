@@ -4,12 +4,21 @@
 * writen by pyhton3 ,help  to discover the hosts devices on the Network ,
  have two ways to get the host on network Ping scan and arp scan,
 ,by start reachable will regex you host info and your network subnet.
+### Change Mac Option -
+-------------------------------------
+ - For Scan with change host mac Use root Login or  sudo privileges
+ - reachable allow use to change the host mac address wit option -M/--Mac set to true 
+ - user can use this option with ping-scan or with arp-scan
+ - if the interface have ip address with 'DHCP' the host  ip address with change  as well
+ - after scan finish the Mac address  and the ip set  to real mac and previous ip 
+
 ### ping Scan -
 -------------------------------------
  - Ping scan by sending Internet Control Message Protocol (ICMP) echo request packets to the target host and waiting for an ICMP echo reply. 
  -  User, can ping all network subnet ,or rangs of ips ,or one host.
  -  reachable tool , will get the mac-addess info , and mac-vendor as well.
 *  downbelow the part of response about generate the host ip for all subnet mask ,then send echo ping request ,one by one ,then wating for response ,and use regex to mach the mac-address and print the mac-address and mac-vendor 
+*  
 
  ```python 
  for Host in Network .hosts():
@@ -108,54 +117,66 @@ for Host in Network .hosts():
  ### * Example ping scan :-
 -------------------------------------------
 
-#### * To Scan all Subnet Use -N <network/prefix>
+#### * To Scan all Subnet Use -PN <network/prefix>
 ```
-   ./reachable.py -N 10.195.100.200/25
+   ./reachable.py -PN 10.195.100.200/25
 ````
-#### * To Scan range of ips Use -N network/prefix -S Start  -E end
+#### * To Scan range of ips Use -PN network/prefix -S Start  -E end
 ```
-   ./reachable.py -N 10.195.100.200/24 -S 240 -E 254 
+   ./reachable.py -PN 10.195.100.200/24 -S 240 -E 254 
  ```
-#### * To Scan one Host  Use  -H  host ip
+#### * To Scan one Host  Use  -PH  host ip
 ```
-    ./reachable.py -H 10.195.100.200/25
+    ./reachable.py -PH 10.195.100.200/25
 ```    
 * or
 ```
-    ./reachable.py -H 10.196.100.3
+    ./reachable.py -PH 10.196.100.3
 ````
 #### * To Save the output into file Use -O file name
 ```
-     ./reachable.py -N 10.195.100.200/24 -S 240 -E 254 -O report.txt
- ```    
+     ./reachable.py -PN 10.195.100.200/24 -S 240 -E 254 -O report.txt
+ ```   
+
+
 --------------------------------------------------------
  ### * Example arp scan-:-
 ------------------------------------------------
-#### * To Scan all Subnet Use -N network/prefix -I  Interface
-```
-     sudo ./reachable.py -N 10.195.100.200/25 -I eth0 
-```
- #### * To Scan range of ips Use -N <network/prefix> -S Start  -E end
- ```
-     sudo ./reachable.py -N 10.195.100.200/24  -I eth0 -S 240 -E 254 
-```
-#### * To Scan one Host  Use  -H  host ip
-```
-     sudo ./reachable.py -H 10.195.100.200/25 -I eth0
- ```    
- * or
- ```
-     sudo ./reachable.py -H 10.196.100.3 -I wlan0
-```
-#### * To Save the output into file Use -O file name
-```
-  sudo ./reachable.py -N 10.195.100.200/24  -I eth0 -S 240 -E 254 -O report.txt
-```
 ###  Noted:-
 --------------------------------------
 ###  For arp Scan Use root Login or  sudo privileges 
 ###  to use -I or --Interface  use ifconfig to make sure that any of the interface are available
+###  all report tool generate  from the scan will be store in the Scan-store folder
 -----------------------------------------
+#### * To Scan all Subnet Use -AN network/prefix -I  Interface
+```
+     sudo ./reachable.py -AN 10.195.100.200/25 -I eth0 
+```
+ #### * To Scan range of ips Use -AN <network/prefix> -S Start  -E end
+ ```
+     sudo ./reachable.py -AN 10.195.100.200/24  -I eth0 -S 240 -E 254 
+```
+#### * To Scan one Host  Use  -AH  host ip
+```
+     sudo ./reachable.py -AH 10.195.100.200/25 -I eth0
+ ```    
+ * or
+ ```
+     sudo ./reachable.py -AH 10.196.100.3 -I wlan0
+```
+#### * To Save the output into file Use -O file name
+```
+  sudo ./reachable.py -AN 10.195.100.200/24  -I eth0 -S 240 -E 254 -O report.txt
+```
+
+###  Scan with Change Mac :-
+--------------------------------------
+```
+  sudo ./reachable.py -PN 10.195.100.200/24  -I eth0 -M true
+  sudo ./reachable.py -PN 10.195.100.200/24  -I eth0 -M true -S 200 -E 254 -O report.txt
+  sudo ./reachable.py -AN 10.195.100.200/24  -I eth0 -M true
+  sudo ./reachable.py -AN 10.195.100.200/24  -I eth0 -M true -S 200 -E 254 -O report.txt
+```
 ## connect :
 - administartor@jacstory.toch
 -  thank you 
