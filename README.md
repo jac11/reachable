@@ -144,9 +144,9 @@ for Host in Network .hosts():
 ------------------------------------------------
 ###  Noted:-
 --------------------------------------
-###  For arp Scan Use root Login or  sudo privileges 
-###  to use -I or --Interface  use ifconfig to make sure that any of the interface are available
-###  all report tool generate  from the scan will be store in the Scan-store folder
+###  - For arp Scan Use root Login or  sudo privileges 
+###  - to use -I or --Interface  use ifconfig to make sure that any of the interface are available
+###  - all report tool generate  from the scan will be store in the Scan-store folder
 -----------------------------------------
 #### * To Scan all Subnet Use -AN network/prefix -I  Interface
 ```
