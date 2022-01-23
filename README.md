@@ -7,7 +7,7 @@
 ### Change Mac Option -
 -------------------------------------
  - For Scan with change host mac Use root Login or  sudo privileges
- - reachable allow use to change the host mac address wit option -M/--Mac set to true 
+ - reachable allow user to change the host mac address wit option -M/--Mac set to true 
  - user can use this option with ping-scan or with arp-scan
  - if the interface have ip address with 'DHCP' the host  ip address with change  as well
  - after scan finish the Mac address  and the ip set  to real mac and previous ip 
