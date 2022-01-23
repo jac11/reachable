@@ -31,6 +31,11 @@ class RangeOfHosts :
       def Change_mac(self):
            if self.args.Mac and 'true' in sys.argv :
               try:
+                  if os.geteuid() == 0 :
+                     pass
+                  else:
+                      print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------|  root or sudo privileges"+R+"\n"+"="*50+"\n")
+                      exit()                     
                   Mac_list =  ['FC:0F:E6:','00:12:EE:','00:1E:DC:','78:84:3C:',
                                '00:26:B9:','14:FE:B5:','BC:30:5B:','D0:67:E5:',
                                '10:1D:C0:','78:25:AD:','A0:0B:BA:','E8:11:32:',
@@ -251,8 +256,10 @@ class RangeOfHosts :
                                 Hcount  +=1
                                 if self.args.output : 
                                    printF +=("|  "+f"{Host:<23}"+"|"+f"{'   ------None-----    ':<23}"+" | "+f"{'  ------None----- ':<26}"+"  |")+'\n'  
-                            elif self.args.Mac and  Host  != host_ip and  "no match found" in Mac_arp :
+                            elif self.args.Mac and  Host  != host_ip and  "no match found" in Mac_arp or \
+                            self.args.Mac and  Host  == host_ip and  "no match found" in Mac_arp  :
                                   print(R+"|  "+Y+f"{host_ip:<23}",R+"|   "+Y+f"{Mac_Interface:<21}"+R+"|  "+Y+f"{vendor[0:23]:<25}",R+"|") 
+                                  Hcount  +=1 
                                   Hcount  +=1 
                                   if self.args.output : 
                                      printF +="|  "+f"{Host:<23}"+"|   "+f"{Mac_Interface:<21}"+"|  "+f"{vendor[0:23]:<27}"+"|"+'\n'                                       

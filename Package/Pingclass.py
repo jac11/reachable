@@ -23,7 +23,7 @@ D = "\033[1m"
 I = ""
 B = '\033[34m'  
 Y='\033[1;33m' 
-   
+ 
 class Discover_Network():
           
     def __init__(self):
@@ -31,8 +31,14 @@ class Discover_Network():
           self.Ping_command() 
             
     def Change_mac(self):
-           if self.args.Mac and 'true' in sys.argv:
+           
+           if self.args.Mac and 'true' in sys.argv :
               try:
+                  if os.geteuid() == 0 :
+                     pass
+                  else:
+                      print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------|  root or sudo privileges"+R+"\n"+"="*50+"\n")
+                      exit()                     
                   Mac_list =  ['FC:0F:E6:','00:12:EE:','00:1E:DC:','78:84:3C:',
                                '00:26:B9:','14:FE:B5:','BC:30:5B:','D0:67:E5:',
                                '10:1D:C0:','78:25:AD:','A0:0B:BA:','E8:11:32:',
@@ -55,7 +61,8 @@ class Discover_Network():
                   os.system(ifconfig_up)   
                   time.sleep(20)
                   print(D+I+B+"[+] New Mac          --------------|- " + self.Mac_addr )  
-              except Exception :
+             # except Exception :
+              except KeyboardInterrupt:
                        print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set InterFace argument"+R+"\n"+"="*50+"\n")
                        exit()
            else:
@@ -235,7 +242,8 @@ class Discover_Network():
                                 Hcount  +=1
                                 if self.args.output : 
                                    printF +=("|  "+f"{Host:<23}"+"|"+f"{'   ------None-----    ':<23}"+" | "+f"{'  ------None----- ':<26}"+"  |")+'\n'  
-                           elif self.args.Mac and  Host  != host_ip and  "no match found" in Mac_arp :
+                           elif self.args.Mac and  Host  != host_ip and  "no match found" in Mac_arp or \
+                           self.args.Mac and  Host  == host_ip and  "no match found" in Mac_arp  :
                                   print(R+"|  "+Y+f"{host_ip:<23}",R+"|   "+Y+f"{Mac_Interface:<21}"+R+"|  "+Y+f"{vendor[0:23]:<25}",R+"|") 
                                   Hcount  +=1 
                                   if self.args.output : 
@@ -282,11 +290,13 @@ class Discover_Network():
                       if self.args.Mac : 
                          with open("./Scan-Store/"+self.args.output,'w') as out_put :
                               out_put.write(Banner1+'\n\n'+printF+Banner1)
+                              
                               id_user =  os.stat("./reachable.py").st_uid 
+                              print(id_user)
                               os.chown("./Scan-Store/"+self.args.output, id_user, id_user)
                               exit()            
-           except Exception:
-                print(R+"\n"+"="*50+"\n"+W+D+I+"[*] HOST (",self.args.Pnetwork,")   -------------| ValueError"+R+"\n"+"="*50+"\n")
+         #  except Exception:
+           #     print(R+"\n"+"="*50+"\n"+W+D+I+"[*] HOST (",self.args.Pnetwork,")   -------------| ValueError"+R+"\n"+"="*50+"\n")
            except KeyboardInterrupt:
                print(Banner)
                if self.args.output :          
