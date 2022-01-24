@@ -38,6 +38,7 @@ class Run :
            if self.args.Pnetwork and not self.args.start and not self.args.end :
              
               print("--PING-SCAN"+"\n"+"+"*20)
+              from Package.Pingclass import Discover_Network
               run = Discover_Network()
               exit()
            elif self.args.Pnetwork and  self.args.start and self.args.end :
