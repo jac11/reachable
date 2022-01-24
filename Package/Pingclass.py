@@ -62,16 +62,15 @@ class Discover_Network():
                   config  = os.system(ifconfig_mac_change)
                   os.system(ifconfig_up)   
                   timer = 20
-                  vendor_chanage = ''
                   if   Mac_list in str("".join(mac_list[0:4]))  :
                        vendor_chanage = 'Sony'
-                  elif Mac_list in   str("".join(mac_list[5:8])) :
+                  elif Mac_list in   str("".join(mac_list[4:8])) :
                        vendor_chanage = 'Dell'
-                  elif Mac_list in str("".join(mac_list[9:12]))  :
+                  elif Mac_list in str("".join(mac_list[8:12]))  :
                        vendor_chanage = 'Samsung'
-                  elif Mac_list in str("".join(mac_list[13:16])) :
+                  elif Mac_list in str("".join(mac_list[12:16])) :
                        vendor_chanage = 'Apple'     
-                  elif Mac_list in str("".join(mac_list[17:20])) :
+                  elif Mac_list in str("".join(mac_list[16:20])) :
                        vendor_chanage = 'Cisco'                     
                   for timered  in range (timer) :
                       time.sleep(1)
