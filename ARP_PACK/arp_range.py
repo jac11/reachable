@@ -30,14 +30,21 @@ class Range_arp_host :
                self.args_command()
                self.arp_Range()  
       def Change_mac(self):
-           if self.args.Mac and 'true' in sys.argv:
+           if self.args.Mac and 'true' in sys.argv :
               try:
-                  Mac_list =  ['FC:0F:E6:','00:12:EE:','00:1E:DC:','78:84:3C:',
+                  if os.geteuid() == 0 :
+                     pass
+                  else:
+                      print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------|  root or sudo privileges"+R+"\n"+"="*50+"\n")
+                      exit()                     
+                  mac_list =  ['FC:0F:E6:','00:12:EE:','00:1E:DC:','78:84:3C:',
                                '00:26:B9:','14:FE:B5:','BC:30:5B:','D0:67:E5:',
                                '10:1D:C0:','78:25:AD:','A0:0B:BA:','E8:11:32:',
                                'F8:1E:DF:','E0:F8:47:','A4:B1:97:','7C:6D:62:',
+                               '00:0A:F3:','00:0C:86:','B4:A4:E3:','FC:FB:FB:',
                               ] 
-                  Mac_list= random.choice(Mac_list)                  
+                              
+                  Mac_list= random.choice(mac_list)                  
                   Mac_Cook  ="".join( f'{random.randrange(16**8):x}')
                   Mac_Host = ':'.join(Mac_Cook[i:i+2] for i in range(0,6,2)).upper()
                   self.Mac_addr =  Mac_list + Mac_Host  
@@ -52,15 +59,32 @@ class Range_arp_host :
                   os.system(ifconfig_down)
                   config  = os.system(ifconfig_mac_change)
                   os.system(ifconfig_up)   
-                   
-                  print(W+D+I+"\n[*] Mac-chanage-\n"+R+"="*14+"\n")
-                  print(D+I+B+"[+] New Mac          --------------|- " + self.Mac_addr )  
-              except Exception :
-                       print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set InterFace argmint"+R+"\n"+"="*50+"\n")
+                  timer = 20
+                  vendor_chanage = ''
+                  if   Mac_list in str("".join(mac_list[0:4]))  :
+                       vendor_chanage = 'Sony'
+                  elif Mac_list in   str("".join(mac_list[5:8])) :
+                       vendor_chanage = 'Dell'
+                  elif Mac_list in str("".join(mac_list[9:12]))  :
+                       vendor_chanage = 'Samsung'
+                  elif Mac_list in str("".join(mac_list[13:16])) :
+                       vendor_chanage = 'Apple'     
+                  elif Mac_list in str("".join(mac_list[17:20])) :
+                       vendor_chanage = 'Cisco'                     
+                  for timered  in range (timer) :
+                      time.sleep(1)
+                      timer -=1
+                      print(D+I+B+"\r[+] [ "+P+self.args.Interface+B+ " ]  in preparation   " + Y +('#'*timered+S ) )
+                      sys.stdout.write('\x1b[1A')
+                      sys.stdout.write('\x1b[2K')
+                  print(D+I+B+"[+] New Mac          --------------|- " + self.Mac_addr +Y+" [ "+vendor_chanage+" ] ")  
+                  time.sleep(1)
+              except Exception :             
+                       print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set InterFace argument"+R+"\n"+"="*50+"\n")
                        exit()
            else:
                 print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| Set -M/--Mac true"+R+"\n"+"="*50+"\n")
-                exit()                                                                                       
+                exit()                                                                                                   
       def arp_Range(self):     
            try:
                if self.args.arpnetwork or (self.args.arpnetwork and self.args.output)  :
@@ -161,6 +185,7 @@ class Range_arp_host :
                       
                    print("[+] Mac-Vendor      --------------|- " + vendor)
                    if self.args.Mac:
+                      print(W+D+I+"\n[*] Mac-chanage-\n"+R+"="*14+"\n")
                       self.Change_mac()
                    print(W+I+D+"\n[*] NETWORK INFO-\n"+R+"="*17+"\n")
                    print(B+I+D+"[+] Network-ID      --------------|- " +  str(Network_ID))
@@ -330,7 +355,14 @@ class Range_arp_host :
                           ifconfig_up = "sudo ifconfig "+self.args.Interface+" up"
                           os.system(ifconfig_down)
                           config  = os.system(ifconfig_mac_change)
-                          os.system(ifconfig_up)       
+                          os.system(ifconfig_up)    
+                  else:                
+                      ifconfig_down = "sudo ifconfig "+self.args.Interface+" down"
+                      ifconfig_mac_change = "sudo ifconfig "+self.args.Interface+ " hw ether "+self.Mac_Interface1
+                      ifconfig_up = "sudo ifconfig "+self.args.Interface+" up"
+                      os.system(ifconfig_down)
+                      config  = os.system(ifconfig_mac_change)
+                      os.system(ifconfig_up)                          
       def args_command(self):
               parser = argparse.ArgumentParser( description="Usage: <OPtion> <arguments> ")
               parser.add_argument( '-AN',"--arpnetwork"    ) 
