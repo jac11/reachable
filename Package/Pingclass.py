@@ -290,9 +290,7 @@ class Discover_Network():
                       if self.args.Mac : 
                          with open("./Scan-Store/"+self.args.output,'w') as out_put :
                               out_put.write(Banner1+'\n\n'+printF+Banner1)
-                              
                               id_user =  os.stat("./reachable.py").st_uid 
-                              print(id_user)
                               os.chown("./Scan-Store/"+self.args.output, id_user, id_user)
                               exit()            
          #  except Exception:
