@@ -60,16 +60,15 @@ class Arp_Network():
                   config  = os.system(ifconfig_mac_change)
                   os.system(ifconfig_up)   
                   timer = 20
-                  vendor_chanage = ''
                   if   Mac_list in str("".join(mac_list[0:4]))  :
                        vendor_chanage = 'Sony'
-                  elif Mac_list in   str("".join(mac_list[5:8])) :
+                  elif Mac_list in   str("".join(mac_list[4:8])) :
                        vendor_chanage = 'Dell'
-                  elif Mac_list in str("".join(mac_list[9:12]))  :
+                  elif Mac_list in str("".join(mac_list[8:12]))  :
                        vendor_chanage = 'Samsung'
-                  elif Mac_list in str("".join(mac_list[13:16])) :
+                  elif Mac_list in str("".join(mac_list[12:16])) :
                        vendor_chanage = 'Apple'     
-                  elif Mac_list in str("".join(mac_list[17:20])) :
+                  elif Mac_list in str("".join(mac_list[16:20])) :
                        vendor_chanage = 'Cisco'                     
                   for timered  in range (timer) :
                       time.sleep(1)
@@ -162,11 +161,10 @@ class Arp_Network():
                       print("[+] Mac-Address     --------------|- " +  self.Mac_Interface1)
                    else:  
                        print("[+] Mac-Address     --------------|- " +  Mac_Interface)  
-                   print("[+] Mac-Vendor      --------------|- " + vendor[0:23)
+                   print("[+] Mac-Vendor      --------------|- " + vendor[0:23])
                    if self.args.Mac:
                       print(W+D+I+"\n[*] Mac-chanage-\n"+R+"="*14+"\n")
                       self.Change_mac()
-                   print("[+] Mac-Vendor      --------------|- " + vendor)
                    print(W+I+D+"\n[*] NETWORK INFO-\n"+R+"="*14+"\n")
                    print(B+I+D+"[+] Network-ID      --------------|- " +  str(Network_ID))
                    if "/" in self.args.arpnetwork[-2:] :
