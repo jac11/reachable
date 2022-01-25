@@ -20,7 +20,7 @@ S ='\033[0m'
 W = "\033[1;37m"
 R = "\033[0;31m"
 D = "\033[1m"
-I = "\033[3m"
+I = ""
 B = '\033[34m'  
 Y='\033[1;33m' 
  
@@ -137,7 +137,7 @@ class Range_arp_host :
                    Macdb = subprocess.check_output (command,shell=True).decode('utf-8')
                    Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
                    FMac = str(re.findall(Macaddr ,Macdb)).split()
-                   Mac_Interface = str("".join(FMac[1])).replace("'",'').replace(']','')
+                   Mac_Interface = str("".join(FMac[0])).replace("'",'').replace(']','').replace("[",'')
                    Mac_Get = Mac_Interface[0:8].replace(":","").upper()
                    Macdb = open('Package/mac-vendor.txt', 'r')
                    Mac = Macdb.readlines()               
@@ -326,8 +326,8 @@ class Range_arp_host :
                         os.chown("./Scan-Store/"+self.args.output, id_user, id_user)
            except PermissionError :
                    print(I+D+R+"\n"+"="*50+W+D+I+"\n"+"[*] for arp scan run as root or sudo privileges   "+R+D+"\n"+"="*50+"\n")           
-           except Exception:
-                   print(R+"\n"+"="*50+W+D+I+"\n"+"[*] ValueError (",self.args.arpnetwork,")-------------| wrong format IP "+R+"\n"+"="*50+"\n")
+           except Exception as error :
+                   print(R+"\n"+"="*50+W+D+I+"\n"+"[*] Error |",error,R+"\n"+"="*50+"\n")
            except KeyboardInterrupt:
                   print(Banner)
                   if self.args.output :          
@@ -349,7 +349,7 @@ class Range_arp_host :
               parser.add_argument( '-S',"--start"      )
               parser.add_argument( '-O',"--output"     )
               parser.add_argument( '-E',"--end"        )
-              parser.add_argument( '-I',"--Interface"  )
+              parser.add_argument( '-I',"--Interface" ,metavar='' , action=None,required = True  )
               parser.add_argument( '-M',"--Mac"  )
               self.args = parser.parse_args()
               if len(sys.argv)> 1 :

@@ -53,7 +53,7 @@ class Arp_Host_One():
                       Macdb = subprocess.check_output (command,shell=True).decode('utf-8')
                       Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
                       FMac = str(re.findall(Macaddr ,Macdb)).split()
-                      Mac_Interface = str("".join(FMac[1])).replace("'",'').replace(']','')
+                      Mac_Interface = str("".join(FMac[0])).replace("'",'').replace(']','').replace("[",'')
                       Mac_Get = Mac_Interface[0:8].replace(":","").upper()
                       Macdb = open('Package/mac-vendor.txt', 'r')
                       Mac = Macdb.readlines()               
@@ -183,11 +183,9 @@ class Arp_Host_One():
                                 print(Banner)
                                 exit()
                except PermissionError :
-                   print(I+D+R+"\n"+"="*50+W+D+I+"\n"+"[*]  for arp scan run as root\
-                   or sudo privileges   "+R+D+"\n"+"="*50+"\n")                   
-                   exit()
-               except Exception  :                       
-                      print(R+D+I+"\n"+"="*50+"\n"+W+I+D+"[*] HOST ("+self.args.Host+")   -------------| ValueError"+R+D+I+"\n"+"="*50+"\n")
+                   print(I+D+R+"\n"+"="*50+W+D+I+"\n"+"[*]  for arp scan run as root or sudo privileges   "+R+D+"\n"+"="*50+"\n")                   
+               except Exception as error :
+                   print(R+"\n"+"="*50+W+D+I+"\n"+"[*] Error |",error,R+"\n"+"="*50+"\n")
                except KeyboardInterrupt:
                      print(Banner)
                      if self.args.output :          
@@ -200,7 +198,7 @@ class Arp_Host_One():
               parser = argparse.ArgumentParser( description="Usage: <OPtion> <arguments> ")          
               parser.add_argument( '-O',"--output"   ,metavar='' , action=None )
               parser.add_argument( '-AH',"--Host"   ,metavar='' , action=None  )
-              parser.add_argument( '-I',"--Interface"   ,metavar='' , action=None  )
+              parser.add_argument( '-I',"--Interface" ,metavar='' , action=None,required = True  )
              
               self.args = parser.parse_args()
               if len(sys.argv)> 1 :

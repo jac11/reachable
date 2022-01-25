@@ -114,7 +114,8 @@ class Arp_Network():
                Macdb = subprocess.check_output (command,shell=True).decode('utf-8')
                Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
                FMac = str(re.findall(Macaddr ,Macdb)).split()
-               Mac_Interface = str("".join(FMac[1])).replace("'",'').replace(']','')
+               print(FMac)
+               Mac_Interface = str("".join(FMac[0])).replace("'",'').replace(']','').replace("[",'')
                Mac_Get = Mac_Interface[0:8].replace(":","").upper()
                Macdb = open('Package/mac-vendor.txt', 'r')
                Mac = Macdb.readlines()               
@@ -302,8 +303,8 @@ class Arp_Network():
                        exit()   
            except PermissionError :
                    print(I+D+R+"\n"+"="*50+W+D+I+"\n"+"[*]  for arp scan run as root or sudo privileges   "+R+D+"\n"+"="*50+"\n")       
-           except Exception:
-                print(R+"\n"+"="*50+W+D+I+"\n"+"[*] ValueError (",self.args.arpnetwork,")-------------| wrong format IP "+R+"\n"+"="*50+"\n")
+           except Exception as error :
+                   print(R+"\n"+"="*50+W+D+I+"\n"+"[*] Error |",error,R+"\n"+"="*50+"\n")
            except KeyboardInterrupt:
                   print(Banner)
                   if self.args.output :          
@@ -324,7 +325,7 @@ class Arp_Network():
             parser = argparse.ArgumentParser( description="Usage: <OPtion> <arguments> ")
             parser.add_argument( '-AN',"--arpnetwork"   ,metavar='' , action=None  )
             parser.add_argument( '-O',"--output"    ,metavar='' , action=None  )
-            parser.add_argument( '-I',"--Interface" ,metavar='' , action=None  )
+            parser.add_argument( '-I',"--Interface" ,metavar='' , action=None,required = True  )
             parser.add_argument( '-M',"--Mac" ,metavar='' , action=None  )
             self.args = parser.parse_args()
             if len(sys.argv)> 1 :
