@@ -302,8 +302,8 @@ class Arp_Network():
                        exit()   
            except PermissionError :
                    print(I+D+R+"\n"+"="*50+W+D+I+"\n"+"[*]  for arp scan run as root or sudo privileges   "+R+D+"\n"+"="*50+"\n")       
-          # except Exception:
-           #     print(R+"\n"+"="*50+W+D+I+"\n"+"[*] ValueError (",self.args.arpnetwork,")-------------| wrong format IP "+R+"\n"+"="*50+"\n")
+           except Exception:
+                print(R+"\n"+"="*50+W+D+I+"\n"+"[*] ValueError (",self.args.arpnetwork,")-------------| wrong format IP "+R+"\n"+"="*50+"\n")
            except KeyboardInterrupt:
                   print(Banner)
                   if self.args.output :          
