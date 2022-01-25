@@ -24,6 +24,8 @@ I = ""
 B = '\033[34m'  
 Y='\033[1;33m' 
 
+
+
 class Arp_Network():
          
     def __init__(self):
@@ -108,39 +110,23 @@ class Arp_Network():
                   Network  = ipaddress.ip_network('{}{}{}'.format(Network_ID,scop,self.args.arpnetwork[-2:]))
                except Exception :
                   Network  = ipaddress.ip_network('{}{}{}'.format(Network_ID,scop,self.args.arpnetwork[-1:]))
-               command_argv = str(" ".join(sys.argv))       
-               Mac_Interface = ':'.join(re.findall('..', '%012x' % uuid.getnode())) 
+               command  = "ifconfig " +self.args.Interface
+               Macdb = subprocess.check_output (command,shell=True).decode('utf-8')
+               Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
+               FMac = str(re.findall(Macaddr ,Macdb)).split()
+               Mac_Interface = str("".join(FMac[1])).replace("'",'').replace(']','')
                Mac_Get = Mac_Interface[0:8].replace(":","").upper()
                Macdb = open('Package/mac-vendor.txt', 'r')
                Mac = Macdb.readlines()               
-               try:
-                  host_name  = socket.gethostname() 
-                  host_ip    = str(check_output(['hostname', '--all-ip-addresses'],stderr=subprocess.PIPE)).\
-                  replace("b'","").replace("'","").replace("\\n","")
-                  Network1 = str(Network )
-                  if  " " in host_ip : 
-                     host_ip = host_ip.split()
-                     host_ip_0 = str(host_ip[0])
-                     if ipaddress.ip_address(host_ip_0) in ipaddress.ip_network(Network1):              
-                         host_ip = host_ip_0
-                         command  = "ifconfig | grep 'ether'"
-                         Macdb = subprocess.check_output (command,shell=True).decode('utf-8')
-                         Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
-                         FMac = re.findall(Macaddr ,Macdb)
-                         Mac_Interface = str("".join(FMac[0]))
-                         Mac_Get = Mac_Interface[0:8].replace(":","").upper()
-                     else:                         
-                         host_ip = str(host_ip[-1])
-                         command  = "ifconfig | grep 'ether'"
-                         Macdb = subprocess.check_output (command,shell=True).decode('utf-8')
-                         Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
-                         FMac = re.findall(Macaddr ,Macdb)
-                         Mac_Interface = str("".join(FMac[-1]))
-                         Mac_Get = Mac_Interface[0:8].replace(":","").upper()
+               try:   
+                  host_ip_fig = "ifconfig "+ self.args.Interface +" | egrep '([0-9]{1,3}\.){3}[0-9]{1,3}'"    
+                  ip_process = str(subprocess.check_output (host_ip_fig,shell=True)).split()
+                  host_ip1 = ip_process
+                  host_ip = str(host_ip1[2])    
                except Exception :
-                      if "/" in sys.argv[2]:
+                     if "/" in sys.argv[2]:
                          host_ip = sys.argv[2][:-3]
-                      else:
+                     else:
                          host_ip = sys.argv[2] 
                count = 0
                for line in Mac :
@@ -208,10 +194,10 @@ class Arp_Network():
                    print(" "+"-"*80)
                    
                    for Host in Network .hosts():
-                         
+  
                         Host = str(Host)
                         rawSocket = socket.socket(socket.PF_PACKET, socket.SOCK_RAW,socket.htons(0x0806))                     
-                        rawSocket.settimeout(1)
+                        rawSocket.settimeout(0.50)
                         rawSocket.bind((self.args.Interface,0x0806))
                         source_ip  = bytes(host_ip.encode('utf-8'))
                         dest_ip    = bytes(Host.encode('utf-8'))
@@ -316,29 +302,23 @@ class Arp_Network():
                        exit()   
            except PermissionError :
                    print(I+D+R+"\n"+"="*50+W+D+I+"\n"+"[*]  for arp scan run as root or sudo privileges   "+R+D+"\n"+"="*50+"\n")       
-           except Exception:
-                print(R+"\n"+"="*50+W+D+I+"\n"+"[*] ValueError (",self.args.arpnetwork,")-------------| wrong format IP "+R+"\n"+"="*50+"\n")
+          # except Exception:
+           #     print(R+"\n"+"="*50+W+D+I+"\n"+"[*] ValueError (",self.args.arpnetwork,")-------------| wrong format IP "+R+"\n"+"="*50+"\n")
            except KeyboardInterrupt:
                   print(Banner)
                   if self.args.output :          
-                       with open("./Scan-Store/"+self.args.output,'w') as out_put :
-                            out_put.write(Banner1+'\n'+printF+Banner1)   
-                            id_user =  os.stat("./reachable.py").st_uid 
-                            os.chown("./Scan-Store/"+self.args.output, id_user, id_user)
-                       if self.args.Mac:              
-                          ifconfig_down = "sudo ifconfig "+self.args.Interface+" down"
-                          ifconfig_mac_change = "sudo ifconfig "+self.args.Interface+ " hw ether "+self.Mac_Interface1
-                          ifconfig_up = "sudo ifconfig "+self.args.Interface+" up"
-                          os.system(ifconfig_down)
-                          config  = os.system(ifconfig_mac_change)
-                          os.system(ifconfig_up)  
-                  else:                
-                      ifconfig_down = "sudo ifconfig "+self.args.Interface+" down"
-                      ifconfig_mac_change = "sudo ifconfig "+self.args.Interface+ " hw ether "+self.Mac_Interface1
-                      ifconfig_up = "sudo ifconfig "+self.args.Interface+" up"
-                      os.system(ifconfig_down)
-                      config  = os.system(ifconfig_mac_change)
-                      os.system(ifconfig_up)                                         
+                        with open("./Scan-Store/"+self.args.output,'w') as out_put :
+                             out_put.write(Banner1+'\n'+printF+Banner1)   
+                             id_user =  os.stat("./reachable.py").st_uid 
+                             os.chown("./Scan-Store/"+self.args.output, id_user, id_user)
+                  if self.args.Mac:              
+                        ifconfig_down = "sudo ifconfig "+self.args.Interface+" down"
+                        ifconfig_mac_change = "sudo ifconfig "+self.args.Interface+ " hw ether "+self.Mac_Interface1
+                        ifconfig_up = "sudo ifconfig "+self.args.Interface+" up"
+                        os.system(ifconfig_down)
+                        config  = os.system(ifconfig_mac_change)
+                        os.system(ifconfig_up)
+                          
                 
     def args_command(self):
             parser = argparse.ArgumentParser( description="Usage: <OPtion> <arguments> ")
