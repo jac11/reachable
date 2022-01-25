@@ -114,7 +114,6 @@ class Arp_Network():
                Macdb = subprocess.check_output (command,shell=True).decode('utf-8')
                Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
                FMac = str(re.findall(Macaddr ,Macdb)).split()
-               print(FMac)
                Mac_Interface = str("".join(FMac[0])).replace("'",'').replace(']','').replace("[",'')
                Mac_Get = Mac_Interface[0:8].replace(":","").upper()
                Macdb = open('Package/mac-vendor.txt', 'r')
