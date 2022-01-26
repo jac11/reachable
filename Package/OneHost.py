@@ -51,40 +51,27 @@ class Host_One():
                       Network_ID  = Network.network_address
                       SubNet      = Network.netmask
                       Hosts_range = Network.num_addresses - 2 
-                      Mac_Interface = ':'.join(re.findall('..', '%012x' % uuid.getnode())) 
+                      command  = "ifconfig " +self.args.Interface
+                      Macdb = subprocess.check_output (command,shell=True).decode('utf-8')
+                      Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
+                      FMac = str(re.findall(Macaddr ,Macdb)).split()
+                      try:
+                         Mac_Interface = str("".join(FMac[1])).replace("'",'').replace(']','').replace("[",'')
+                      except Exception :
+                         Mac_Interface = str("".join(FMac[0])).replace("'",'').replace(']','').replace("[",'')
                       Mac_Get = Mac_Interface[0:8].replace(":","").upper()
                       Macdb = open('Package/mac-vendor.txt', 'r')
-                      Mac = Macdb.readlines()
-                      try:
-                          host_name  = socket.gethostname() 
-                          host_ip    = str(check_output(['hostname', '--all-ip-addresses'],stderr=subprocess.PIPE)).\
-                          replace("b'","").replace("'","").replace("\\n","")
-                          Network1 = str(Network )
-                          if  " " in host_ip : 
-                             host_ip = host_ip.split()
-                             host_ip_0 = str(host_ip[0])
-                             if ipaddress.ip_address(host_ip_0) in ipaddress.ip_network(Network1):              
-                                  host_ip = host_ip_0
-                                  command  = "ifconfig | grep 'ether'"
-                                  Macdb = subprocess.check_output (command,shell=True).decode('utf-8')
-                                  Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
-                                  FMac = re.findall(Macaddr ,Macdb)
-                                  Mac_Interface = str("".join(FMac[0]))
-                                  Mac_Get = Mac_Interface[0:8].replace(":","").upper()
-                             else:                         
-                                  host_ip = str(host_ip[-1])
-                                  command  = "ifconfig | grep 'ether'"
-                                  Macdb = subprocess.check_output (command,shell=True).decode('utf-8')
-                                  Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
-                                  FMac = re.findall(Macaddr ,Macdb)
-                                  Mac_Interface = str("".join(FMac[-1]))
-                                  Mac_Get = Mac_Interface[0:8].replace(":","").upper()
-                                          
+                      Mac = Macdb.readlines()               
+                      try:   
+                         host_ip_fig = "ifconfig "+ self.args.Interface +" | egrep '([0-9]{1,3}\.){3}[0-9]{1,3}'"    
+                         ip_process = str(subprocess.check_output (host_ip_fig,shell=True)).split()
+                         host_ip1 = ip_process
+                         host_ip = str(host_ip1[2])    
                       except Exception :
-                          if "/" in sys.argv[2]:
-                              host_ip = sys.argv[2][:-3]
-                          else:
-                              host_ip = sys.argv[2] 
+                           if "/" in sys.argv[2]:
+                               host_ip = sys.argv[2][:-3]
+                           else:
+                               host_ip = sys.argv[2] 
                       count = 0
                       for line in Mac :
                          line = line.strip()
@@ -197,8 +184,8 @@ class Host_One():
                    if self.args.output :          
                        with open("./Scan-Store/"+self.args.output,"w+") as out_put:
                           out_put.write(Banner1+'\n'+printF+"\n"+Banner1) 
-               except Exception  :                       
-                      print(R+"\n"+"="*50+"\n"+D+I+W+"[*] HOST (",self.args.phost,")   -------------| ValueError"+R+"\n"+"="*50+"\n")
+               except Exception  as error:                       
+                      print(R+"\n"+"="*50+"\n"+D+I+W+"[*] Error|",error,R+"\n"+"="*50+"\n")
                except KeyboardInterrupt:
                       print(Banner)
                       if self.args.output:
@@ -208,7 +195,7 @@ class Host_One():
               parser = argparse.ArgumentParser( description="Usage: <OPtion> <arguments> ")          
               parser.add_argument( '-O',"--output"   ,metavar='' , action=None )
               parser.add_argument( '-PH',"--phost"   ,metavar='' , action=None  )
-
+              parser.add_argument( '-I',"--Interface" ,metavar='' , action=None,required = True  )
               self.args = parser.parse_args()
               if len(sys.argv)> 1 :
                    pass
