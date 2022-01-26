@@ -130,40 +130,31 @@ class RangeOfHosts :
                            exit()                      
                    command_argv = str(" ".join(sys.argv))
                    start = timeit.default_timer()
-                   Mac_Interface = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
-                   Mac_Get = Mac_Interface[0:8].replace(":","").upper()
-                   Macdb = open('Package/mac-vendor.txt', 'r')
-                   Mac = Macdb.readlines()
+                   command  = "ifconfig " +self.args.Interface
+                   Macdb = subprocess.check_output (command,shell=True).decode('utf-8')
+                   Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
+                   FMac = str(re.findall(Macaddr ,Macdb)).split()
                    try:
-                       host_name  = socket.gethostname() 
-                       host_ip    = str(check_output(['hostname', '--all-ip-addresses'],stderr=subprocess.PIPE)).\
-                       replace("b'","").replace("'","").replace("\\n","")
-                       Network1 = str(Network )
-                       if  " " in host_ip : 
-                            host_ip = host_ip.split()
-                            host_ip_0 = str(host_ip[0])
-                            if ipaddress.ip_address(host_ip_0) in ipaddress.ip_network(Network1):              
-                                 host_ip = host_ip_0
-                                 command  = "ifconfig | grep 'ether'"
-                                 Macdb = subprocess.check_output (command,shell=True).decode('utf-8')
-                                 Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
-                                 FMac = re.findall(Macaddr ,Macdb)
-                                 Mac_Interface = str("".join(FMac[0]))
-                                 Mac_Get = Mac_Interface[0:8].replace(":","").upper()
-                            else:                         
-                                 host_ip = str(host_ip[-1])
-                                 command  = "ifconfig | grep 'ether'"
-                                 Macdb = subprocess.check_output (command,shell=True).decode('utf-8')
-                                 Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
-                                 FMac = re.findall(Macaddr ,Macdb)
-                                 Mac_Interface = str("".join(FMac[-1]))
-                                 Mac_Get = Mac_Interface[0:8].replace(":","").upper()
+                       Mac_Interface = str("".join(FMac[1])).replace("'",'').replace(']','').replace("[",'')
                    except Exception :
-                          if "/" in sys.argv[2]:
-                              host_ip = sys.argv[2][:-3]
-                          else:
-                              host_ip = sys.argv[2] 
-                              host_ip = sys.argv[2] 
+                       Mac_Interface = str("".join(FMac[0])).replace("'",'').replace(']','').replace("[",'')
+                   if self.args.Mac: 
+                        Mac_Get = self.Mac_Interface1[0:8].replace(":","").upper()
+                   else:
+                     Mac_Get = Mac_Interface[0:8].replace(":","").upper()
+                   Macdb = open('Package/mac-vendor.txt', 'r')
+                   Mac = Macdb.readlines()               
+                   try:   
+                     host_ip_fig = "ifconfig "+ self.args.Interface +" | egrep '([0-9]{1,3}\.){3}[0-9]{1,3}'"    
+                     ip_process = str(subprocess.check_output (host_ip_fig,shell=True)).split()
+                     host_ip1 = ip_process
+                     host_ip = str(host_ip1[2]) 
+                     print(host_ip)
+                   except Exception :
+                     if "/" in sys.argv[2]:
+                         host_ip = sys.argv[2][:-3]
+                     else:
+                         host_ip = sys.argv[2]     
                    count = 0
                    for line in Mac :
                        line = line.strip()
@@ -239,11 +230,10 @@ class RangeOfHosts :
                               break
                         oct_ip[3] = Host_Num 
                         Host = str(oct_ip).replace("['","").replace("'","").replace(",",".").replace("]","").replace(" ","")               
-                        DisCover = Popen(["ping", "-w1",Host],stdout=PIPE,stderr=subprocess.PIPE)
+                        DisCover =  Popen(["ping","-I","{}".format(self.args.Interface) ,"-w1",Host], stdout=PIPE)
                         output   = DisCover.communicate()[0]
                         respons  = DisCover.returncode                       
-                        if respons == 0:
-                            
+                        if respons == 0:                           
                             pid = Popen(["arp", "-a", Host], stdout=PIPE)
                             arp_host = pid.communicate()[0]                          
                             Mac_arp = str(arp_host)
@@ -263,13 +253,11 @@ class RangeOfHosts :
                                     vendor1 = " Unknown-MAC" 
                                count += 1  
                             
-                            if Host == host_ip and \
-                            "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) ==  str(ipaddress.ip_address(host_ip))\
-                            and not self.args.Mac :
+                            if Host == host_ip and not self.args.Mac :
                                 print(R+"|  "+Y+f"{Host:<23}",R+"|   "+Y+f"{Mac_Interface:<21}"+R+"|  "+Y+f"{vendor[0:23]:<25}",R+"|") 
                                 Hcount  +=1 
                                 if self.args.output : 
-                                    printF +="|  "+f"{Host:<23}"+"|   "+f"{Mac_Interface:<21}"+"|  "+f"{vendor[0:23]:<27}"+"|"+'\n'                                                                  
+                                    printF +="|  "+f"{Host:<23}"+"|   "+f"{Mac_Interface:<21}"+"| "+f"{vendor[0:23]:<27}"+"|"+'\n'                                 
                             elif "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) != str(ipaddress.ip_address(host_ip))\
                             and not self.args.Mac :                     
                                 print(R+"|  "+Y+f"{Host:<23}",R+"|"+P+f"{'   ------None-----    ':<23}"+R+" | "+B+f"{'  ------None----- ':<25}",R+" |")

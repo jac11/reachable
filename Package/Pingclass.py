@@ -117,7 +117,7 @@ class Discover_Network():
                    Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
                    FMac = str(re.findall(Macaddr ,Macdb)).split()
                    try:
-                       Mac_Interface = str("".join(FMac[1])).replace("'",'').replace(']','').replace("[",'')
+                       Mac_Interface = str("".join(FMac[-1])).replace("'",'').replace(']','').replace("[",'')
                    except Exception :
                        Mac_Interface = str("".join(FMac[0])).replace("'",'').replace(']','').replace("[",'')
                if self.args.Mac: 
@@ -214,10 +214,8 @@ class Discover_Network():
                    for Host in Network .hosts():
                        Host = str(Host)
                        DisCover = Popen(["ping","-I","{}".format(self.args.Interface) ,"-w1",Host], stdout=PIPE)
-
                        output   = DisCover.communicate()[0]
-                       respons  = DisCover.returncode  
-                                            
+                       respons  = DisCover.returncode                                         
                        if respons == 0:
                            pid = Popen(["arp", "-a", Host], stdout=PIPE)
                            arp_host = pid.communicate()[0]                          
@@ -237,13 +235,11 @@ class Discover_Network():
                                     vendor1 = " Unknown-MAC" 
                                count += 1  
                                
-                           if Host == host_ip and \
-                           "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) ==  str(ipaddress.ip_address(host_ip))\
-                           and not self.args.Mac :
+                           if Host == host_ip and  not self.args.Mac :
                                 print(R+"|  "+Y+f"{Host:<23}",R+"|   "+Y+f"{Mac_Interface:<21}"+R+"|  "+Y+f"{vendor[0:23]:<25}",R+"|") 
                                 Hcount  +=1 
                                 if self.args.output : 
-                                    printF +="|  "+f"{Host:<23}"+"|   "+f"{Mac_Interface:<21}"+"|  "+f"{vendor[0:23]:<27}"+"|"+'\n'                                                                  
+                                    printF +="|  "+f"{Host:<23}"+"|   "+f"{Mac_Interface:<21}"+"|  "+f"{vendor[0:23]:<27}"+"|"+'\n'   
                            elif "no match found" in Mac_arp and str(ipaddress.ip_address(Host)) != str(ipaddress.ip_address(host_ip))\
                            and not self.args.Mac :                     
                                 print(R+"|  "+Y+f"{Host:<23}",R+"|"+P+f"{'   ------None-----    ':<23}"+R+" | "+B+f"{'  ------None----- ':<25}",R+" |")
