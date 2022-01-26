@@ -137,7 +137,10 @@ class Range_arp_host :
                    Macdb = subprocess.check_output (command,shell=True).decode('utf-8')
                    Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
                    FMac = str(re.findall(Macaddr ,Macdb)).split()
-                   Mac_Interface = str("".join(FMac[0])).replace("'",'').replace(']','').replace("[",'')
+                   try:
+                      Mac_Interface = str("".join(FMac[0])).replace("'",'').replace(']','').replace("[",'')
+                   except Exception :
+                      Mac_Interface = str("".join(FMac[1])).replace("'",'').replace(']','').replace("[",'')
                    Mac_Get = Mac_Interface[0:8].replace(":","").upper()
                    Macdb = open('Package/mac-vendor.txt', 'r')
                    Mac = Macdb.readlines()               
