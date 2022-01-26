@@ -20,8 +20,12 @@ class Run :
         def Check_InterFace(self):
             if self.args.Interface:
               try:
-                  commad_ifconfig = "ifconfig | grep  "+ self.args.Interface
-                  commad_ifconfig = subprocess.check_output (commad_ifconfig,shell=True).decode('utf-8')
+                  commad_ifconfig = "ifconfig "+ self.args.Interface
+                  commad_ifconfig = subprocess.check_output (commad_ifconfig,shell=True,stderr=subprocess.PIPE).decode('utf-8')
+                  if self.args.Interface not in commad_ifconfig\
+                  or "inet" not in commad_ifconfig:
+                       print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Error   -------------| [ "+Y+self.args.Interface+S+W+" ] No Connection "+R+"\n"+"="*50+"\n")
+                       exit()                
               except Exception:
                      print(B+"\n[+] Device [ "+Y +self.args.Interface+B+ " ] does not exist \n")
                      print(W+D+I+"\n[*] Device available-\n"+R+"="*14+"\n")
@@ -97,3 +101,9 @@ class Run :
  
 if __name__=="__main__":
    Run()
+
+
+
+
+
+
