@@ -54,7 +54,7 @@ class Arp_Host_One():
                       Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
                       FMac = str(re.findall(Macaddr ,Macdb)).split()
                       try:
-                         Mac_Interface = str("".join(FMac[1])).replace("'",'').replace(']','').replace("[",'')
+                         Mac_Interface = str("".join(FMac[-1])).replace("'",'').replace(']','').replace("[",'')
                       except Exception :
                          Mac_Interface = str("".join(FMac[0])).replace("'",'').replace(']','').replace("[",'')
                       Mac_Get = Mac_Interface[0:8].replace(":","").upper()
@@ -113,7 +113,7 @@ class Arp_Host_One():
                    dcount = 0
                    Host = str(Host)
                    rawSocket = socket.socket(socket.PF_PACKET, socket.SOCK_RAW,socket.htons(0x0806))                     
-                   rawSocket.settimeout(.50)
+                   rawSocket.settimeout(0.50)
                    rawSocket.bind((self.args.Interface,0x0806))
                    source_ip  = bytes(host_ip.encode('utf-8'))
                    dest_ip    = bytes(Host.encode('utf-8'))

@@ -138,9 +138,9 @@ class Range_arp_host :
                    Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
                    FMac = str(re.findall(Macaddr ,Macdb)).split()
                    try:
-                      Mac_Interface = str("".join(FMac[0])).replace("'",'').replace(']','').replace("[",'')
+                      Mac_Interface = str("".join(FMac[-1])).replace("'",'').replace(']','').replace("[",'')
                    except Exception :
-                      Mac_Interface = str("".join(FMac[1])).replace("'",'').replace(']','').replace("[",'')
+                      Mac_Interface = str("".join(FMac[0])).replace("'",'').replace(']','').replace("[",'')
                    Mac_Get = Mac_Interface[0:8].replace(":","").upper()
                    Macdb = open('Package/mac-vendor.txt', 'r')
                    Mac = Macdb.readlines()               
@@ -221,12 +221,13 @@ class Range_arp_host :
                    for Host_Num in range(int(self.args.start),int(self.args.end)+1) :                      
                         if Host_Num == 256 :  
                               break
-                        command = "ip -s -s neigh flush all  > output "
-                        subprocess.call(command,shell=True,stderr=subprocess.PIPE) 
+                    #    command = "ip -s -s neigh flush all  > output "
+                    #    subprocess.call(command,shell=True,stderr=subprocess.PIPE) 
+                    #    os.remove("output")
                         oct_ip[3] = Host_Num 
                         Host = str(oct_ip).replace("['","").replace("'","").replace(",",".").replace("]","").replace(" ","")               
                         rawSocket = socket.socket(socket.PF_PACKET, socket.SOCK_RAW,socket.htons(0x0806))                     
-                        rawSocket.settimeout(2)
+                        rawSocket.settimeout(0.50)
                         rawSocket.bind((self.args.Interface,0x0806))
                         source_ip  = bytes(host_ip.encode('utf-8'))
                         dest_ip    = bytes(Host.encode('utf-8'))
