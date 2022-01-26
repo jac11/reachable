@@ -119,19 +119,19 @@ for Host in Network .hosts():
 
 #### * To Scan all Subnet Use -PN <network/prefix>
 ```
-   ./reachable.py -PN 10.195.100.200/25
+   ./reachable.py -PN 10.195.100.200/25 -I eth0
 ````
 #### * To Scan range of ips Use -PN network/prefix -S Start  -E end
 ```
-   ./reachable.py -PN 10.195.100.200/24 -S 240 -E 254 
+   ./reachable.py -PN 10.195.100.200/24 -S 240 -E 254 -I eth0
  ```
 #### * To Scan one Host  Use  -PH  host ip
 ```
-    ./reachable.py -PH 10.195.100.200/25
+    ./reachable.py -PH 10.195.100.200/25 -I eth0
 ```    
 * or
 ```
-    ./reachable.py -PH 10.196.100.3
+    ./reachable.py -PH 10.196.100.3 -I eth0
 ````
 #### * To Save the output into file Use -O file name
 ```
