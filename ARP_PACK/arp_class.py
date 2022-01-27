@@ -230,7 +230,7 @@ class Arp_Network():
                             try:
                                 send_packet    = rawSocket.send(Packet) 
                                 recv_replay    = rawSocket.recv(1020)
-                                rawSocket.close() 
+                                #  rawSocket.close() 
                                 Ether_Header   = recv_replay[0:12]
                                 unpack_Header  = struct.unpack('!6s6s',Ether_Header)
                                 Mac_Source     = str(binascii.hexlify(unpack_Header[1])).replace("b",'',1).replace("'","")
