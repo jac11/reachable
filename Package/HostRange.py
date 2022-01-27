@@ -273,9 +273,9 @@ class RangeOfHosts :
                                      printF +="|  "+f"{Host:<23}"+"|   "+f"{Mac_Interface:<21}"+"|  "+f"{vendor[0:23]:<27}"+"|"+'\n'                                       
                             else:  
                                 Hcount  +=1	                                                                             
-                                print(R+"|  "+B+f"{Host:<23}",R+"|   "+P+f"{Mac:<21}"+R+"| "+W+f"{vendor1[0:23]:<25}"+R+"  |"+R)
+                                print(R+"|  "+B+f"{Host:<23}",R+"|   "+P+f"{Mac[0:17]:<21}"+R+"| "+W+f"{vendor1[0:23]:<25}"+R+"  |"+R)
                                 if self.args.output :
-                                     printF +=str("|  "+f"{Host:<23}"+"|   "+f"{Mac:<21}"+"| "+f"{vendor1[0:23]:<26}"+"  |")+'\n'        
+                                     printF +=str("|  "+f"{Host:<23}"+"|   "+f"{Mac[0:17]:<21}"+"| "+f"{vendor1[0:23]:<26}"+"  |")+'\n'        
                         else:
                            dcount +=1 
                            host_split = Host.split(".")                              
