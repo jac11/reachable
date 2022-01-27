@@ -149,7 +149,6 @@ class RangeOfHosts :
                      ip_process = str(subprocess.check_output (host_ip_fig,shell=True)).split()
                      host_ip1 = ip_process
                      host_ip = str(host_ip1[2]) 
-                     print(host_ip)
                    except Exception :
                      if "/" in sys.argv[2]:
                          host_ip = sys.argv[2][:-3]
@@ -342,13 +341,7 @@ class RangeOfHosts :
                         os.system(ifconfig_down)
                         config  = os.system(ifconfig_mac_change)
                         os.system(ifconfig_up)
-                     else:             
-                         ifconfig_down = "sudo ifconfig "+self.args.Interface+" down"
-                         ifconfig_mac_change = "sudo ifconfig "+self.args.Interface+ " hw ether "+self.Mac_Interface
-                         ifconfig_up = "sudo ifconfig "+self.args.Interface+" up"
-                         os.system(ifconfig_down)
-                         config  = os.system(ifconfig_mac_change)
-                         os.system(ifconfig_up) 
+                    
       def args_command(self):
               parser = argparse.ArgumentParser( description="Usage: <OPtion> <arguments> ")
               parser.add_argument( '-PN',"--Pnetwork"   ,metavar='' , action=None ) 
