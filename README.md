@@ -1,6 +1,7 @@
 # reachable:-
 *****************************
 ### reachable network scan
+### "Scapy Not use in reachable Tool Scan use 'raw socket'"
 * writen by pyhton3 ,help  to discover the hosts devices on the Network ,
  have two ways to get the host on network Ping scan and arp scan,
 ,by start reachable will regex you host info and your network subnet.
@@ -111,7 +112,7 @@ for Host in Network .hosts():
 
 1.  https://github.com/jac11/reachable.git
 2.  cd reachable
-3.  chmod +x rachable.py
+3.  chmod +x reachable.py
 4.  show help message ./reachable -h 
 -----------------------------------------------
  ### * Example ping scan :-
@@ -173,8 +174,14 @@ for Host in Network .hosts():
 --------------------------------------
 ```
   sudo ./reachable.py -PN 10.195.100.200/24  -I eth0 -M true
+```
+```
   sudo ./reachable.py -PN 10.195.100.200/24  -I eth0 -M true -S 200 -E 254 -O report.txt
+ ```
+ ```
   sudo ./reachable.py -AN 10.195.100.200/24  -I eth0 -M true
+ ````
+ ```
   sudo ./reachable.py -AN 10.195.100.200/24  -I eth0 -M true -S 200 -E 254 -O report.txt
 ```
 ## connect :
