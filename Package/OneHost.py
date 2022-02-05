@@ -56,7 +56,7 @@ class Host_One():
                       Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
                       FMac = str(re.findall(Macaddr ,Macdb)).split()
                       try:
-                         Mac_Interface = str("".join(FMac[1])).replace("'",'').replace(']','').replace("[",'')
+                         Mac_Interface = str("".join(FMac[-1])).replace("'",'').replace(']','').replace("[",'')
                       except Exception :
                          Mac_Interface = str("".join(FMac[0])).replace("'",'').replace(']','').replace("[",'')
                       Mac_Get = Mac_Interface[0:8].replace(":","").upper()
@@ -170,9 +170,9 @@ class Host_One():
                                 if self.args.output : 
                                    printF +=("|  "+f"{Host:<23}"+"|"+f"{'   ------None-----    ':<23}"+" | "+f"{'  ------None----- ':<26}"+"  |")+'\n'                                  
                          else:                    	                                                                             
-                              print(R+"|  "+B+f"{Host:<23}",R+"|   "+P+f"{Mac:<21}"+R+"| "+W+f"{vendor1[0:23]:<25}"+R+"  |"+R)
+                              print(R+"|  "+B+f"{Host:<23}",R+"|   "+P+f"{Mac[0:17]:<21}"+R+"| "+W+f"{vendor1[0:23]:<25}"+R+"  |"+R)
                               if self.args.output :
-                                 printF +=str("|  "+f"{Host:<23}"+"|   "+f"{Mac:<21}"+"| "+f"{vendor1[0:23]:<26}"+"  |")+'\n'
+                                 printF +=str("|  "+f"{Host:<23}"+"|   "+f"{Mac[0:17]:<21}"+"| "+f"{vendor1[0:23]:<26}"+"  |")+'\n'
                    else:
                          
                            host_split = Host.split(".")                              
