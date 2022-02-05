@@ -135,7 +135,7 @@ class RangeOfHosts :
                    Macaddr = re.compile(r'(?:[0-9a-fA-F]:?){12}')
                    FMac = str(re.findall(Macaddr ,Macdb)).split()
                    try:
-                       Mac_Interface = str("".join(FMac[1])).replace("'",'').replace(']','').replace("[",'')
+                       Mac_Interface = str("".join(FMac[-1])).replace("'",'').replace(']','').replace("[",'')
                    except Exception :
                        Mac_Interface = str("".join(FMac[0])).replace("'",'').replace(']','').replace("[",'')
                    if self.args.Mac: 
