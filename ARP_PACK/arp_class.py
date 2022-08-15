@@ -166,7 +166,8 @@ class Arp_Network():
                    print("[+] Number of hosts --------------|- " +  str(Hosts_range ))
                    print("[+] Broadcast IP    --------------|- " +  str(Network.broadcast_address))
                    print(R+"\n"+"="*50+"\n"+W+D+I+"[*] Host-discover-"+R+"\n"+"="*20+"\n")
-                   if self.args.output:                        
+                   if self.args.output:  
+                         command_argv = str(" ".join(sys.argv)) 
                          printF  = ""
                          printF  += ("[+] "+ command_argv)+"\n"
                          printF  += ("\n[*] HOST INFO-\n"+"="*14+"\n")+"\n"
