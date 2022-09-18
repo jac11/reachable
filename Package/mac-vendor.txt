@@ -1989,6 +1989,7 @@
 0007C4  JEAN  Co.  Ltd.
 0007C5  Gcom,  Inc.
 0007C6  VDS  Vosskuhler  GmbH
+2ED469  OPPO-A74-Wireless
 0007C7  Synectics  Systems  Limited
 0007C8  Brain21,  Inc.
 0007C9  Technol  Seven  Co.,  Ltd.
